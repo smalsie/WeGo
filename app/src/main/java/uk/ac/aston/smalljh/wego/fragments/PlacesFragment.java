@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import uk.ac.aston.smalljh.wego.HomeItem;
 import uk.ac.aston.smalljh.wego.R;
 
-public class HomeFragment extends Fragment {
+public class PlacesFragment extends Fragment {
 	
 	 @Override
      public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/place_icon"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="120dp"
+                android:layout_height="100dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="6dip"
@@ -39,35 +39,29 @@
                     android:id="@+id/place_location"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Joshua Small added the trip New York with Courtney Sullivan"
-                    android:textSize="16sp" />
+                    android:text="Brooklyn"
+                    android:textSize="35sp" />
 
+
+                <TextView
+                    android:id="@+id/place_city"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/place_location"
+                    android:text="New York, USA"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/place_date"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/place_location"
-                    android:text="5 mins ago"
-                    android:textSize="12sp" />
+                    android:layout_below="@id/place_city"
+                    android:text="You were here from October 27th 2014 to October 30th 2014"
+                    android:textSize="18sp" />
 
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="193dp"
-            android:layout_below="@id/home_main_content">
-
-
-            <ImageView
-                android:id="@+id/map"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="0dp"
-                android:src="@drawable/map" />
-
-        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>
