@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import uk.ac.aston.smalljh.wego.fragments.HomeFragment;
+import uk.ac.aston.smalljh.wego.fragments.PlacesFragment;
 import uk.ac.aston.smalljh.wego.fragments.TripFragment;
 
 public class MainActivity extends ActionBarActivity {
@@ -154,6 +155,9 @@ public class MainActivity extends ActionBarActivity {
 
         } else if(position == 1) {
             frag = new TripFragment();
+
+        } else if(position ==2) {
+            frag = new PlacesFragment();
 
         } else {
             frag = new TripFragment();

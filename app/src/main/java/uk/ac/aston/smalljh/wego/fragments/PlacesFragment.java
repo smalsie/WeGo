@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import uk.ac.aston.smalljh.wego.HomeItem;
+import uk.ac.aston.smalljh.wego.PlaceItem;
 import uk.ac.aston.smalljh.wego.R;
 
 public class PlacesFragment extends Fragment {
@@ -25,36 +25,35 @@ public class PlacesFragment extends Fragment {
          View rootView = inflater.inflate(R.layout.home_main, container, false);
 
 
-         ArrayList<HomeItem> homeItems = new ArrayList<HomeItem>();
+         ArrayList<PlaceItem> placeItems = new ArrayList<PlaceItem>();
 
-         homeItems.add(new HomeItem("Joshua Small added the trip New York with Courtney Sullivan!", "5 mins ago"));
-         homeItems.add(new HomeItem("Joshua Small added the trip New York with Courtney Sullivan!", "5 mins ago"));
-
+         placeItems.add(new PlaceItem("Brooklyn", "Ney York, USA", "You were here from October 27th 2014 to October 30th 2014", R.drawable.brooklyn));
+         placeItems.add(new PlaceItem("Brooklyn", "Ney York, USA", "You were here from October 27th 2014 to October 30th 2014", R.drawable.brooklyn));
 
 
          final ListView listView = (ListView) rootView.findViewById(R.id.listview);
 
-         final ContactArrayAdaptor arrayAdapter = new ContactArrayAdaptor(getActivity(), homeItems);
+         final ContactArrayAdaptor arrayAdapter = new ContactArrayAdaptor(getActivity(), placeItems);
 
          listView.setAdapter(arrayAdapter);
 
 
-         getActivity().setTitle("Home");
+         getActivity().setTitle(R.string.your_places);
          return rootView;
      }
 
 
 
 
-    private class ContactArrayAdaptor extends ArrayAdapter<HomeItem> {
+    private class ContactArrayAdaptor extends ArrayAdapter<PlaceItem> {
         private final Context context;
-        private final ArrayList<HomeItem> homeItems;
+        private final ArrayList<PlaceItem> placeItems;
 
-        public ContactArrayAdaptor(Context context,ArrayList<HomeItem> homeItems) {
+        public ContactArrayAdaptor(Context context,ArrayList<PlaceItem> homeItems) {
 
             super(context, R.layout.home_fragment,homeItems);
             this.context = context;
-            this.homeItems = homeItems;
+            this.placeItems = homeItems;
         }
 
         /**
@@ -67,20 +66,22 @@ public class PlacesFragment extends Fragment {
             //get the LayoutInflater
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //Inflate events_list.xml
-            View rowView = inflater.inflate(R.layout.home_item, parent, false);
+            View rowView = inflater.inflate(R.layout.place_item, parent, false);
 
             //Each of the textviews to add specified content to
             TextView title= (TextView) rowView.findViewById(R.id.place_location);
+            TextView city= (TextView) rowView.findViewById(R.id.place_city);
             TextView time= (TextView) rowView.findViewById(R.id.place_date);
-            ImageView flag = (ImageView) rowView.findViewById(R.id.place_icon);
+            ImageView image = (ImageView) rowView.findViewById(R.id.place_icon);
 
-            title.setText(homeItems.get(position).getTitle());
+            title.setText(placeItems.get(position).getTitle());
 
-            int pic = R.drawable.me;
+            int pic = placeItems.get(position).getPic();
 
+            city.setText(placeItems.get(position).getCity());
 
-            time.setText(homeItems.get(position).getTime());
-            flag.setImageResource(pic);
+            time.setText(placeItems.get(position).getTime());
+            image.setImageResource(pic);
 
 
             return rowView;
