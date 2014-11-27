@@ -1,5 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/listview"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_weight="0"
+        android:orientation="horizontal"
+        android:background="@color/purple">
+
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/home_add_trip"
+            android:layout_weight="0.5"
+            android:background="@color/purple"
+            android:text="@string/add_trip"
+            android:textColor="@color/white"/>
+
+
+        <LinearLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/purple"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/purple"
+                android:layout_marginTop="40dp"></LinearLayout>
+
+        </LinearLayout>
+        
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/home_add_place"
+            android:layout_weight="0.5"
+            android:background="@color/purple"
+            android:text="@string/add_place"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
+

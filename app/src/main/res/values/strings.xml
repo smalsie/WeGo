@@ -25,4 +25,13 @@
     <string name="sign_up">Sign Up</string>
 
 
+    <string name="add_trip">Add Trip</string>
+    <string name="add_place">Add Place</string>
+
+    <string name="name">Name</string>
+    <string name="date">Date</string>
+    <string name="end_date">End Date</string>
+    <string name="location">Location</string>
+    <string name="notes">Notes</string>
+
 </resources>
