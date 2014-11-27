@@ -14,10 +14,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import uk.ac.aston.smalljh.wego.NearbyPlaceItem;
 import uk.ac.aston.smalljh.wego.PlaceItem;
 import uk.ac.aston.smalljh.wego.R;
 
-public class PlacesFragment extends Fragment {
+public class NearbyPlacesFragment extends Fragment {
 	
 	 @Override
      public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,35 +26,35 @@ public class PlacesFragment extends Fragment {
          View rootView = inflater.inflate(R.layout.places_main, container, false);
 
 
-         ArrayList<PlaceItem> placeItems = new ArrayList<PlaceItem>();
+         ArrayList<NearbyPlaceItem> nearbyPlaceItems = new ArrayList<NearbyPlaceItem>();
 
-         placeItems.add(new PlaceItem("Brooklyn", "Ney York, USA", "You were here from October 27th 2014 to October 30th 2014", R.drawable.brooklyn));
-         placeItems.add(new PlaceItem("Brooklyn", "Ney York, USA", "You were here from October 27th 2014 to October 30th 2014", R.drawable.brooklyn));
+         nearbyPlaceItems.add(new NearbyPlaceItem("Brooklyn", "3 Miles Away!", 5, R.drawable.brooklyn));
+         nearbyPlaceItems.add(new NearbyPlaceItem("Brooklyn", "3 Miles Away!", 5, R.drawable.brooklyn));
 
 
          final ListView listView = (ListView) rootView.findViewById(R.id.listview);
 
-         final ContactArrayAdaptor arrayAdapter = new ContactArrayAdaptor(getActivity(), placeItems);
+         final ContactArrayAdaptor arrayAdapter = new ContactArrayAdaptor(getActivity(), nearbyPlaceItems);
 
          listView.setAdapter(arrayAdapter);
 
 
-         getActivity().setTitle(R.string.your_places);
+         getActivity().setTitle(R.string.nearby_places);
          return rootView;
      }
 
 
 
 
-    private class ContactArrayAdaptor extends ArrayAdapter<PlaceItem> {
+    private class ContactArrayAdaptor extends ArrayAdapter<NearbyPlaceItem> {
         private final Context context;
-        private final ArrayList<PlaceItem> placeItems;
+        private final ArrayList<NearbyPlaceItem> nearbyPlaceItems;
 
-        public ContactArrayAdaptor(Context context,ArrayList<PlaceItem> placeItems) {
+        public ContactArrayAdaptor(Context context,ArrayList<NearbyPlaceItem> nearbyPlaceItems) {
 
-            super(context, R.layout.home_fragment,placeItems);
+            super(context, R.layout.home_fragment,nearbyPlaceItems);
             this.context = context;
-            this.placeItems = placeItems;
+            this.nearbyPlaceItems = nearbyPlaceItems;
         }
 
         /**
@@ -66,21 +67,22 @@ public class PlacesFragment extends Fragment {
             //get the LayoutInflater
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //Inflate events_list.xml
-            View rowView = inflater.inflate(R.layout.place_item, parent, false);
+            View rowView = inflater.inflate(R.layout.nearby_places_item, parent, false);
 
             //Each of the textviews to add specified content to
-            TextView title= (TextView) rowView.findViewById(R.id.nearby_place_location);
-            TextView city= (TextView) rowView.findViewById(R.id.nearby_place_distance_away);
-            TextView time= (TextView) rowView.findViewById(R.id.place_date);
+            TextView place= (TextView) rowView.findViewById(R.id.nearby_place_location);
+            TextView distance= (TextView) rowView.findViewById(R.id.nearby_place_distance_away);
+            TextView rating= (TextView) rowView.findViewById(R.id.nearby_place_rating);
             ImageView image = (ImageView) rowView.findViewById(R.id.nearby_place_icon);
 
-            title.setText(placeItems.get(position).getTitle());
+            place.setText(nearbyPlaceItems.get(position).getPlace());
 
-            int pic = placeItems.get(position).getPic();
+            int pic = nearbyPlaceItems.get(position).getPic();
 
-            city.setText(placeItems.get(position).getCity());
+            distance.setText(nearbyPlaceItems.get(position).getDistance());
 
-            time.setText(placeItems.get(position).getTime());
+            rating.setText(nearbyPlaceItems.get(position).getStars());
+
             image.setImageResource(pic);
 
 

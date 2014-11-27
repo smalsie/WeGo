@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -31,6 +33,14 @@ public class HomeFragment extends Fragment {
          homeItems.add(new HomeItem("Joshua Small added the trip New York with Courtney Sullivan!", "5 mins ago"));
 
 
+         Button b = (Button) rootView.findViewById(R.id.home_add_place);
+
+         b.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Toast.makeText(getActivity(), "Hello", Toast.LENGTH_LONG).show();
+             }
+         });
 
          final ListView listView = (ListView) rootView.findViewById(R.id.listview);
 
@@ -70,9 +80,9 @@ public class HomeFragment extends Fragment {
             View rowView = inflater.inflate(R.layout.home_item, parent, false);
 
             //Each of the textviews to add specified content to
-            TextView title= (TextView) rowView.findViewById(R.id.place_location);
+            TextView title= (TextView) rowView.findViewById(R.id.nearby_place_location);
             TextView time= (TextView) rowView.findViewById(R.id.place_date);
-            ImageView image = (ImageView) rowView.findViewById(R.id.place_icon);
+            ImageView image = (ImageView) rowView.findViewById(R.id.nearby_place_icon);
 
             title.setText(homeItems.get(position).getTitle());
 

@@ -15,8 +15,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import uk.ac.aston.smalljh.wego.fragments.AddPlaceFragment;
 import uk.ac.aston.smalljh.wego.fragments.AddTripFragment;
+import uk.ac.aston.smalljh.wego.fragments.GalleryFragment;
 import uk.ac.aston.smalljh.wego.fragments.HomeFragment;
+import uk.ac.aston.smalljh.wego.fragments.NearbyPlacesFragment;
+import uk.ac.aston.smalljh.wego.fragments.PlacesFragment;
 import uk.ac.aston.smalljh.wego.fragments.TripFragment;
 
 public class MainActivity extends ActionBarActivity {
@@ -156,8 +160,20 @@ public class MainActivity extends ActionBarActivity {
         } else if(position == 1) {
             frag = new TripFragment();
 
-        } else if(position == 5) {
+        } else if(position == 2) {
+            frag = new PlacesFragment();
+
+        }  else if(position == 3) {
+            frag = new NearbyPlacesFragment();
+
+        }  else if(position == 4) {
+            frag = new GalleryFragment();
+
+        }  else if(position == 5) {
             frag = new AddTripFragment();
+
+        } else if(position == 6) {
+            frag = new AddPlaceFragment();
 
         } else {
             frag = new TripFragment();

@@ -13,6 +13,7 @@
         <item>Nearby Places</item>
         <item>Gallery</item>
         <item>Add Trip</item>
+        <item>Add Place</item>
     </string-array>
     
      <string name="drawer_open">Open navigation drawer</string>
@@ -25,7 +26,9 @@
     <string name="sign_up">Sign Up</string>
 
     <string name="your_places">Your Places</string>
-
+    <string name="your_trips">Your Trips</string>
+    <string name="nearby_places">Nearby Places</string>
+    <string name="gallery">Gallery</string>
 
     <string name="add_trip">Add Trip</string>
     <string name="add_place">Add Place</string>
@@ -35,5 +38,10 @@
     <string name="end_date">End Date</string>
     <string name="location">Location</string>
     <string name="notes">Notes</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="sort">Sort</string>
+
 
 </resources>
