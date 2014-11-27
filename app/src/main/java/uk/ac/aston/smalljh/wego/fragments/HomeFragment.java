@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment {
             //Each of the textviews to add specified content to
             TextView title= (TextView) rowView.findViewById(R.id.place_location);
             TextView time= (TextView) rowView.findViewById(R.id.place_date);
-            ImageView flag = (ImageView) rowView.findViewById(R.id.place_icon);
+            ImageView image = (ImageView) rowView.findViewById(R.id.place_icon);
 
             title.setText(homeItems.get(position).getTitle());
 
@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment {
 
 
             time.setText(homeItems.get(position).getTime());
-            flag.setImageResource(pic);
+            image.setImageResource(pic);
 
 
             return rowView;

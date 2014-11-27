@@ -24,6 +24,8 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
 
+    <string name="your_places">Your Places</string>
+
 
     <string name="add_trip">Add Trip</string>
     <string name="add_place">Add Place</string>
