@@ -28,8 +28,8 @@ public class TripFragment extends Fragment {
 
         String[] companions = {"Courtney Sullivan"};
 
-        tripItems.add(new TripItem("New York", companions, "You were here from October 27th 2014 to October 30th 2014", R.drawable.brooklyn));
-        tripItems.add(new TripItem("New York", companions, "You were here from October 27th 2014 to October 30th 2014", R.drawable.brooklyn));
+        tripItems.add(new TripItem("Paris", companions, "You were here from October 27th 2014 to October 30th 2014", R.drawable.eifel));
+        tripItems.add(new TripItem("Dublin", companions, "You were here from November 28th 2014 to November 29th 2014", R.drawable.dublin));
 
 
         final ListView listView = (ListView) rootView.findViewById(R.id.listview);

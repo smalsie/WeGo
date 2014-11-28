@@ -27,8 +27,8 @@ public class PlacesFragment extends Fragment {
 
          ArrayList<PlaceItem> placeItems = new ArrayList<PlaceItem>();
 
-         placeItems.add(new PlaceItem("Brooklyn", "Ney York, USA", "You were here from October 27th 2014 to October 30th 2014", R.drawable.brooklyn));
-         placeItems.add(new PlaceItem("Brooklyn", "Ney York, USA", "You were here from October 27th 2014 to October 30th 2014", R.drawable.brooklyn));
+         placeItems.add(new PlaceItem("Eiffel Tower", "Paris, France", "You were here October 27th 2014", R.drawable.eifel));
+         placeItems.add(new PlaceItem("Arc de Triomphe", "Paris, France", "You were here from October 28th 2014", R.drawable.arc1));
 
 
          final ListView listView = (ListView) rootView.findViewById(R.id.listview);
