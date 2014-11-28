@@ -123,23 +123,15 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
 
-
-        switch(item.getItemId()) {
+        return true;
+       /* switch(item.getItemId()) {
         case R.id.action_logout:
             // create intent to perform web search for this planet
-            Intent intent = new Intent(this, Login.class);
-            startActivity(intent);
 
-            // catch event that there's no activity to handle intent
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-               // Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-            }
             return true;
         default:
             return super.onOptionsItemSelected(item);
-        }
+        }*/
 
     }
 

@@ -28,8 +28,10 @@ public class NearbyPlacesFragment extends Fragment {
 
          ArrayList<NearbyPlaceItem> nearbyPlaceItems = new ArrayList<NearbyPlaceItem>();
 
-         nearbyPlaceItems.add(new NearbyPlaceItem("Brooklyn", "3 Miles Away!", 5, R.drawable.brooklyn));
-         nearbyPlaceItems.add(new NearbyPlaceItem("Brooklyn", "3 Miles Away!", 5, R.drawable.brooklyn));
+         nearbyPlaceItems.add(new NearbyPlaceItem("Aston University", "0.2 Miles Away!", 5, R.drawable.aston));
+         nearbyPlaceItems.add(new NearbyPlaceItem("BCU", "0.5 Miles Away!", 2, R.drawable.bcu));
+         nearbyPlaceItems.add(new NearbyPlaceItem("Millennium Point", "1 Mile Away!", 4, R.drawable.mil));
+         nearbyPlaceItems.add(new NearbyPlaceItem("The Bullring", "1.5 Miles Away!", 3, R.drawable.bullring));
 
 
          final ListView listView = (ListView) rootView.findViewById(R.id.listview);
