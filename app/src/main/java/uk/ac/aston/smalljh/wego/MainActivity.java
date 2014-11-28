@@ -1,6 +1,7 @@
 package uk.ac.aston.smalljh.wego;
 
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -123,23 +124,23 @@ public class MainActivity extends ActionBarActivity {
         }
 
 
-        /*switch(item.getItemId()) {
-        case R.id.:
+        switch(item.getItemId()) {
+        case R.id.action_logout:
             // create intent to perform web search for this planet
-            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-            intent.putExtra(SearchManager.QUERY, getSupportActionBar().getTitle());
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+
             // catch event that there's no activity to handle intent
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
             } else {
-                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
+               // Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
             }
             return true;
         default:
             return super.onOptionsItemSelected(item);
-        }*/
+        }
 
-        return super.onOptionsItemSelected(item);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -152,7 +153,7 @@ public class MainActivity extends ActionBarActivity {
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
         // Create a new fragment and specify the planet to show based on position
-        Fragment frag = new Fragment();
+        Fragment frag = null;
 
         if(position == 0) {
             frag = new HomeFragment();
@@ -178,12 +179,17 @@ public class MainActivity extends ActionBarActivity {
         } else {
             frag = new TripFragment();
         }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
 
-        drawerList.setItemChecked(position, true);
-        setTitle(menuItems[position]);
-        drawerLayout.closeDrawer(drawerList);
+        if(frag != null) {
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+
+            drawerList.setItemChecked(position, true);
+            setTitle(menuItems[position]);
+            drawerLayout.closeDrawer(drawerList);
+
+        }
 
     }
 

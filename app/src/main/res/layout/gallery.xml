@@ -1,185 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/main_image"
-            android:layout_width="fill_parent"
-            android:layout_height="250dp"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            android:src="@drawable/brooklyn"
-            android:layout_marginBottom="0dp"/>
+        android:orientation="vertical"
+        android:layout_weight="1" >
 
         <LinearLayout
-            android:layout_marginTop="0dp"
-            android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
+                android:id="@+id/main_image"
+                android:layout_width="fill_parent"
+                android:layout_height="250dp"
+                android:layout_marginBottom="0dp"
                 android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
+                android:scaleType="fitXY"
+                android:src="@drawable/eifel" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="0dp"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/eifel1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/eifel2" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/eifel3"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="0dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/moi" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/mad"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/stairs"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="0dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/stairs1"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/stairs2"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/street"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="0dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/arc1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/arc1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/arc3" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="0dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/arc4" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/arc5" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.33"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/us" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <LinearLayout
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_weight="0"
+        android:orientation="horizontal">
+
+
+        <Button
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:src="@drawable/brooklyn"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:layout_weight="0.33"/>
-
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:id="@+id/places_sort_button"
+            android:background="@color/purple"
+            android:text="@string/sort"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

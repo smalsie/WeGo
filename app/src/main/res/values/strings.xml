@@ -29,6 +29,9 @@
     <string name="your_trips">Your Trips</string>
     <string name="nearby_places">Nearby Places</string>
     <string name="gallery">Gallery</string>
+    <string name="login">Login</string>
+
+    <string name="logout">Logout</string>
 
     <string name="add_trip">Add Trip</string>
     <string name="add_place">Add Place</string>
