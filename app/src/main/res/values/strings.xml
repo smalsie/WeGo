@@ -49,5 +49,7 @@
 
     <string name="sort">Sort</string>
 
+    <string name="invalid_credentials">Invalid Credentials!</string>
+
 
 </resources>

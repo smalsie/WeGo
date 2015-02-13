@@ -40,6 +40,10 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+
+
+
         drawerTitle = "Menu";
 
         menuItems = getResources().getStringArray(R.array.menu_options);
