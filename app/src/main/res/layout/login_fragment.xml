@@ -10,9 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerVertical="true"
-        android:padding="25dp"
-        android:visibility="gone"
-        android:id="@+id/login_form">
+        android:padding="25dp">
 
 
         <!-- Input fields -->

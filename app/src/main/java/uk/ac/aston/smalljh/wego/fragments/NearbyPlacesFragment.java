@@ -42,6 +42,7 @@ public class NearbyPlacesFragment extends Fragment {
 
 
          getActivity().setTitle(R.string.nearby_places);
+
          return rootView;
      }
 

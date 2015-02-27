@@ -2,6 +2,7 @@ package uk.ac.aston.smalljh.wego.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import uk.ac.aston.smalljh.wego.AddPlaceActivity;
 import uk.ac.aston.smalljh.wego.HomeItem;
 import uk.ac.aston.smalljh.wego.R;
 
@@ -24,7 +26,7 @@ public class HomeFragment extends Fragment {
 	 @Override
      public View onCreateView(LayoutInflater inflater, ViewGroup container,
              Bundle savedInstanceState) {
-         View rootView = inflater.inflate(R.layout.home_main, container, false);
+         final View rootView = inflater.inflate(R.layout.home_main, container, false);
 
 
          ArrayList<HomeItem> homeItems = new ArrayList<HomeItem>();
@@ -38,7 +40,8 @@ public class HomeFragment extends Fragment {
          b.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Toast.makeText(getActivity(), "Hello", Toast.LENGTH_LONG).show();
+                 Intent intent = new Intent(rootView.getContext(), AddPlaceActivity.class);
+                 startActivity(intent);
              }
          });
 

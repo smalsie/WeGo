@@ -14,6 +14,7 @@
         <item>Gallery</item>
         <item>Add Trip</item>
         <item>Add Place</item>
+         <item>Log Out</item>
     </string-array>
     
      <string name="drawer_open">Open navigation drawer</string>
@@ -31,7 +32,7 @@
     <string name="gallery">Gallery</string>
     <string name="login">Login</string>
 
-    <string name="logout">Logout</string>
+    <string name="logout">Log Out</string>
 
     <string name="add_trip">Add Trip</string>
     <string name="add_place">Add Place</string>
@@ -50,6 +51,14 @@
     <string name="sort">Sort</string>
 
     <string name="invalid_credentials">Invalid Credentials!</string>
+
+    <string name="logging_out">Logging Out</string>
+
+    <string name="logout_alert_title">Log Out</string>
+    <string name="logout_alert_message">Are you sure you want to log out?</string>
+
+    <string name="quit_add_place_alert_title">Discard New Place?</string>
+    <string name="quit_add_place_alert_message">Are you sure you want to discard this place?</string>
 
 
 </resources>

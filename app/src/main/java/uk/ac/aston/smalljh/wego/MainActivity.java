@@ -1,6 +1,8 @@
 package uk.ac.aston.smalljh.wego;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +26,7 @@ import uk.ac.aston.smalljh.wego.fragments.HomeFragment;
 import uk.ac.aston.smalljh.wego.fragments.NearbyPlacesFragment;
 import uk.ac.aston.smalljh.wego.fragments.PlacesFragment;
 import uk.ac.aston.smalljh.wego.fragments.TripFragment;
+import uk.ac.aston.smalljh.wego.fragments.UserInfo;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -35,10 +39,21 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence drawerTitle;
     private CharSequence title;
 
+    private UserInfo userInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.i("SIGN UP", "Main Activity");
+
+        userInfo = new UserInfo(getApplicationContext());
+
+        int userId = userInfo.getUserID();
+
+        if(userId <= 0)
+            finish();
 
         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
 
@@ -170,7 +185,34 @@ public class MainActivity extends ActionBarActivity {
             frag = new AddTripFragment();
 
         } else if(position == 6) {
-            frag = new AddPlaceFragment();
+
+            drawerLayout.closeDrawer(drawerList);
+
+            Intent intent = new Intent(getApplicationContext(), AddPlaceActivity.class);
+            startActivity(intent);
+
+        } else if(position == 7) {
+
+            drawerLayout.closeDrawer(drawerList);
+
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.logout_alert_title)
+                    .setMessage(R.string.logout_alert_message)
+                    .setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            userInfo.setUserID(0);
+                            Intent intent = new Intent(getApplicationContext(), LogOutActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    }).show();
 
         } else {
             frag = new TripFragment();
@@ -179,9 +221,14 @@ public class MainActivity extends ActionBarActivity {
         if(frag != null) {
 
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, frag)
+                    .addToBackStack(null)
+                    .commit();
 
-            drawerList.setItemChecked(position, true);
+            if(position< 6)
+                drawerList.setItemChecked(position, true);
+
             setTitle(menuItems[position]);
             drawerLayout.closeDrawer(drawerList);
 

@@ -18,7 +18,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final String DBNAME = "feedList";
+    public static final String DBNAME = "WeGO";
 
     //User Table
     public static final String userTable = "User";
@@ -165,7 +165,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 userTable,
                 null,
                 values);
-        // db.close();
+         db.close();
     }
 
     @Override
