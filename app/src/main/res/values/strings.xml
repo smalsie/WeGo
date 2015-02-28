@@ -14,6 +14,7 @@
         <item>Gallery</item>
         <item>Add Trip</item>
         <item>Add Place</item>
+         <item>Your Map</item>
          <item>Log Out</item>
     </string-array>
     
@@ -59,6 +60,9 @@
 
     <string name="quit_add_place_alert_title">Discard New Place?</string>
     <string name="quit_add_place_alert_message">Are you sure you want to discard this place?</string>
+
+
+    <string name="add_this_location">Do you want to use your current location?</string>
 
 
 </resources>

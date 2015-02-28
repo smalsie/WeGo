@@ -195,6 +195,15 @@ public class MainActivity extends ActionBarActivity {
 
             drawerLayout.closeDrawer(drawerList);
 
+            Intent intent = new Intent(getApplicationContext(), MapPane.class);
+            startActivity(intent);
+
+        }
+
+        else if(position == 8) {
+
+            drawerLayout.closeDrawer(drawerList);
+
             new AlertDialog.Builder(this)
                     .setTitle(R.string.logout_alert_title)
                     .setMessage(R.string.logout_alert_message)
