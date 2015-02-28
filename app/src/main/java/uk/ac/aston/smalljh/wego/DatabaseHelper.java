@@ -165,7 +165,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 userTable,
                 null,
                 values);
-         db.close();
+         //db.close();
     }
 
     @Override

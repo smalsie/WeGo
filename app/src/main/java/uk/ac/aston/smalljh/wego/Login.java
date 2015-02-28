@@ -26,11 +26,14 @@ import uk.ac.aston.smalljh.wego.fragments.UserInfo;
 public class Login extends Activity {
 
     private UserInfo userInfo;
+    private DatabaseHelper dH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        dH = new DatabaseHelper(getApplicationContext());
 
         userInfo = new UserInfo(getApplicationContext());
 
@@ -88,7 +91,7 @@ public class Login extends Activity {
 
     private int checkCredentials(String username, String password) {
 
-        DatabaseHelper dH = new DatabaseHelper(getApplicationContext());
+
         SQLiteDatabase db = dH.getReadableDatabase();
 
         String[] projection = {
