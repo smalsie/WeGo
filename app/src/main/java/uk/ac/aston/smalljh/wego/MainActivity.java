@@ -25,6 +25,7 @@ import uk.ac.aston.smalljh.wego.fragments.GalleryFragment;
 import uk.ac.aston.smalljh.wego.fragments.HomeFragment;
 import uk.ac.aston.smalljh.wego.fragments.NearbyPlacesFragment;
 import uk.ac.aston.smalljh.wego.fragments.PlacesFragment;
+import uk.ac.aston.smalljh.wego.fragments.TestFragment;
 import uk.ac.aston.smalljh.wego.fragments.TripFragment;
 import uk.ac.aston.smalljh.wego.fragments.UserInfo;
 
@@ -173,7 +174,9 @@ public class MainActivity extends ActionBarActivity {
             frag = new TripFragment();
 
         } else if(position == 2) {
-            frag = new PlacesFragment();
+            //frag = new PlacesFragment();
+
+            frag = new TestFragment();
 
         }  else if(position == 3) {
             frag = new NearbyPlacesFragment();
