@@ -35,6 +35,11 @@
 
         </activity>
         <activity
+            android:name=".fragments.TestActivity"
+            android:label="@string/app_name" >
+
+        </activity>
+        <activity
             android:name=".Login"
             android:label="@string/app_name" >
             <intent-filter>

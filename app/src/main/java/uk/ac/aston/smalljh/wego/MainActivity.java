@@ -25,6 +25,7 @@ import uk.ac.aston.smalljh.wego.fragments.GalleryFragment;
 import uk.ac.aston.smalljh.wego.fragments.HomeFragment;
 import uk.ac.aston.smalljh.wego.fragments.NearbyPlacesFragment;
 import uk.ac.aston.smalljh.wego.fragments.PlacesFragment;
+import uk.ac.aston.smalljh.wego.fragments.TestActivity;
 import uk.ac.aston.smalljh.wego.fragments.TestFragment;
 import uk.ac.aston.smalljh.wego.fragments.TripFragment;
 import uk.ac.aston.smalljh.wego.fragments.UserInfo;
@@ -58,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
 
         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
 
-
+        getSupportActionBar().setElevation(0);
 
         drawerTitle = "Menu";
 
@@ -176,7 +177,8 @@ public class MainActivity extends ActionBarActivity {
         } else if(position == 2) {
             //frag = new PlacesFragment();
 
-            frag = new TestFragment();
+             frag = new TestFragment();
+
 
         }  else if(position == 3) {
             frag = new NearbyPlacesFragment();
