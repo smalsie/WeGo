@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple">#464264</color>
-    <color name="dark_purple">#231d52</color>
+    <color name="dark_purple">#120e2a</color>
     <color name="default_color">#FFF</color>
     <color name="white">#FFF</color>
     <color name="black">#000</color>
