@@ -48,6 +48,8 @@ public class TestFragment extends Fragment {
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
 
+        tabs.setTextColorResource(R.color.white);
+
 
         tabs.setIndicatorColorResource(R.color.white);
         tabs.setShouldExpand(true);

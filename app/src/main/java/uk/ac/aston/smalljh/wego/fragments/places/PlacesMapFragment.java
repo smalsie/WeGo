@@ -1,4 +1,4 @@
-package uk.ac.aston.smalljh.wego.fragments;
+package uk.ac.aston.smalljh.wego.fragments.places;
 
 
 import android.content.Context;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import uk.ac.aston.smalljh.wego.PlaceItem;
 import uk.ac.aston.smalljh.wego.R;
 
-public class PlacesFragment extends Fragment {
+public class PlacesMapFragment extends PlacesFrag {
 	
 	 @Override
      public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +42,10 @@ public class PlacesFragment extends Fragment {
          return rootView;
      }
 
-
+    @Override
+    public String getName() {
+        return "Map";
+    }
 
 
     private class ContactArrayAdaptor extends ArrayAdapter<PlaceItem> {
@@ -87,9 +90,6 @@ public class PlacesFragment extends Fragment {
             return rowView;
         }
 
-        public String getName() {
-            return "Places";
-        }
     }
 }
 
