@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/joshuahugh/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.2/support-annotations-21.0.2.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="99373741f99a0556ee293c41e8faa1ca3ae8a4e6">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-684938ef68113f81ad4e92eb6f1a3e05592e3948.jar" />
+    </item>
+    <item
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="962e8b12569c56dbdcf8367eb4eac8bb129cd18f">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-6ff0634307900e4434e746da9e054c03f24fafb1.jar" />
+    </item>
+    <item
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-d27b9d36fdf7a06af91cad5f7846457de7c9fd2d.jar" />
+    </item>
+    <item
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.astuetz/pagerslidingtabstrip/1.0.1/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="7912610ed96381c25c36d986eba422731b9641b6">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-02bf16320a4b7030f8215a4d9105c5eb1b044300.jar" />
+    </item>
+    <item
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="7ae2d38807a43b2f2185ff4089a92c790b579e54">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-b8a66ccbdfce8d879ebb3d919e1d707d7511d546.jar" />
+    </item>
+    <item
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="d1bf02de1c56d942e7a9d093b8610ba1ef4128e3">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-cc00707aa7bef37a14388906b3ab59f115009f72.jar" />
+    </item>
+
+</items>
