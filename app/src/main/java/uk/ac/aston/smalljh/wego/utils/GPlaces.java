@@ -2,9 +2,11 @@ package uk.ac.aston.smalljh.wego.utils;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by joshuahugh on 09/03/15.
@@ -54,7 +56,7 @@ public class GPlaces {
         this.vicinity = vicinity;
     }
 
-    static GPlaces jsonToPontoReferencia(JSONObject pontoReferencia) {
+    public static GPlaces jsonToPontoReferencia(JSONObject pontoReferencia) {
         try {
             GPlaces result = new GPlaces();
             JSONObject geometry = (JSONObject) pontoReferencia.get("geometry");
@@ -67,7 +69,7 @@ public class GPlaces {
             result.setId(pontoReferencia.getString("id"));
             return result;
         } catch (JSONException ex) {
-            Logger.getLogger(Place.class.getName()).log(Level.SEVERE, null, ex);
+           ex.printStackTrace();
         }
         return null;
     }
