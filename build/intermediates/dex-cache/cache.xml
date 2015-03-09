@@ -2,6 +2,13 @@
 <items version="2" >
 
     <item
+        jar="/home/joshuahugh/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="a60a5e993c98c864010053cb901b7eab25306568">
+        <dex dex="/home/joshuahugh/mobiledev/WeGo/app/build/intermediates/pre-dexed/debug/gson-2.2.4-7362203fb6692aebde1090459f8cb26b344d1306.jar" />
+    </item>
+    <item
         jar="/home/joshuahugh/mobiledev/WeGo/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/classes.jar"
         jumboMode="false"
         revision="20.0.0"
