@@ -64,5 +64,7 @@
 
     <string name="add_this_location">Do you want to use your current location?</string>
 
+    <string name="no_location_detected">Unable to find your location!</string>
+
 
 </resources>

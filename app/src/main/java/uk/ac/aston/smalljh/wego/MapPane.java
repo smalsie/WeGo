@@ -3,6 +3,7 @@ package uk.ac.aston.smalljh.wego;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -17,7 +18,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
@@ -36,15 +41,27 @@ import java.util.ArrayList;
 import uk.ac.aston.smalljh.wego.utils.GPlaces;
 import uk.ac.aston.smalljh.wego.utils.GooglePlacesUtils;
 
-public class MapPane extends Activity implements OnMapReadyCallback {
+public class MapPane extends Activity implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
 
     private boolean fullscreen;
     private Activity activity;
+    protected GoogleApiClient mGoogleApiClient;
+
+    protected static final String TAG = "basic-location-sample";
+
+    /**
+     * Represents a geographical location.
+     */
+    protected Location mLastLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
+
+
 
         activity = this;
 
@@ -84,7 +101,7 @@ public class MapPane extends Activity implements OnMapReadyCallback {
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
 
-
+        buildGoogleApiClient();
 
     }
 
@@ -94,29 +111,56 @@ public class MapPane extends Activity implements OnMapReadyCallback {
 
 
 
-        LatLng sydney = new LatLng(-33.867, 151.206);
-
-        map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
-
-        map.addMarker(new MarkerOptions()
-                .title("Sydney")
-                .snippet("The most populous city in Australia.")
-                .position(sydney));
-
         map.setMyLocationEnabled(true);
 
-        String key = "AIzaSyDk1f-jCsuh0L5UKe68iTfVhhTC6cIQ6gE";
-        String distance = "10";
-        String latlng = "37.787930,-122.4074990";
 
-        String placesRequest = "https://maps.googleapis.com/maps/api/place/search/json"
-                + "?location=" + latlng
-                + "&radius=" + distance
-                + "&key=" + key;
-        PlacesFeed detailTask = new PlacesFeed();
-        detailTask.execute(placesRequest);
 
+
+    }
+
+    /**
+     * Runs when a GoogleApiClient object successfully connects.
+     */
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        // Provides a simple way of getting a device's location and is well suited for
+        // applications that do not require a fine-grained location and that do not need location
+        // updates. Gets the best and most recent location currently available, which may be null
+        // in rare cases when a location is not available.
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+
+
+
+            String key = "AIzaSyDk1f-jCsuh0L5UKe68iTfVhhTC6cIQ6gE";
+            String distance = "1000";
+            String latlng = mLastLocation.getLatitude() + "," + mLastLocation.getLongitude();
+
+            String placesRequest = "https://maps.googleapis.com/maps/api/place/search/json"
+                    + "?location=" + latlng
+                    + "&radius=" + distance
+                    + "&key=" + key;
+            PlacesFeed detailTask = new PlacesFeed();
+            detailTask.execute(placesRequest);
+        } else {
+            Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
+        // onConnectionFailed.
+        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        // The connection to Google Play services was lost for some reason. We call connect() to
+        // attempt to re-establish the connection.
+        Log.i(TAG, "Connection suspended");
+        mGoogleApiClient.connect();
     }
 
     private class PlacesFeed extends AsyncTask<String, Void, ArrayList<GPlaces>> {
@@ -198,10 +242,35 @@ public class MapPane extends Activity implements OnMapReadyCallback {
 
             //Each of the textviews to add specified content to
             TextView title= (TextView) rowView.findViewById(R.id.google_places_name);
+            TextView address= (TextView) rowView.findViewById(R.id.google_places_address);
 
             title.setText(places.get(position).getName());
+            address.setText(places.get(position).getVicinity());
 
             return rowView;
         }
     }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
 }
