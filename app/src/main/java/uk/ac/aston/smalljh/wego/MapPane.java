@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -130,6 +131,17 @@ public class MapPane extends Activity implements
 
                 }
 
+            }
+        });
+
+        Button currentLocationButton = (Button) findViewById(R.id.map_use_current_location);
+        currentLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("Location", "Yo");
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
             }
         });
 
@@ -291,7 +303,7 @@ public class MapPane extends Activity implements
 
             ArrayList<GPlaces> places = new ArrayList<GPlaces>();
 
-            for (int i = 0; (i < foundPlaces.size() && i < 10); i++)
+            for (int i = 0; (i < foundPlaces.size() && i < 50); i++)
                 places.add(foundPlaces.get(i));
 
             final ListView listView = (ListView) findViewById(R.id.listview_for_places);
@@ -320,7 +332,7 @@ public class MapPane extends Activity implements
          * @return a view (the list of all of the events)
          */
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             //get the LayoutInflater
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //Inflate events_list.xml
@@ -332,6 +344,17 @@ public class MapPane extends Activity implements
 
             title.setText(places.get(position).getName());
             address.setText(places.get(position).getVicinity());
+
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("Place", (Parcelable)places.get(position));
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish();
+                }
+            });
+
 
             return rowView;
         }

@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:padding="0dp"
                 android:src="@drawable/ic_action_full_screen"
-                android:id="@+id/add_place_loacte_button"
+                android:id="@+id/add_place_locate_button"
                 android:layout_weight="1"/>
 
         </LinearLayout>

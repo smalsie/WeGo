@@ -1,5 +1,8 @@
 package uk.ac.aston.smalljh.wego.utils;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONException;
@@ -11,7 +14,8 @@ import java.util.logging.Logger;
 /**
  * Created by joshuahugh on 09/03/15.
  */
-public class GPlaces {
+public class GPlaces implements Parcelable {
+
     private String id;
     private String icon;
     private String name;
@@ -80,4 +84,41 @@ public class GPlaces {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+
+        out.writeString(id);
+        out.writeString(icon);
+        out.writeString(name);
+        out.writeString(vicinity);
+        out.writeDouble(latitude);
+        out.writeDouble(longitude);
+    }
+
+    public static final Parcelable.Creator<GPlaces> CREATOR
+            = new Parcelable.Creator<GPlaces>() {
+        public GPlaces createFromParcel(Parcel in) {
+            return new GPlaces(in);
+        }
+
+        public GPlaces[] newArray(int size) {
+            return new GPlaces[size];
+        }
+    };
+
+    public GPlaces(Parcel in) {
+        id = in.readString();
+        icon = in.readString();
+        name = in.readString();
+        vicinity = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+    }
+
+    public GPlaces() { }
 }

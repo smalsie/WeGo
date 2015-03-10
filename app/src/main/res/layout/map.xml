@@ -33,7 +33,8 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="60dp"
-        android:text="@string/add_this_location"/>
+        android:text="@string/add_this_location"
+        android:id="@+id/map_use_current_location"/>
 
     <LinearLayout
         android:layout_width="match_parent"
