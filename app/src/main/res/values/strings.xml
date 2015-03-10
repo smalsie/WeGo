@@ -65,6 +65,7 @@
     <string name="add_this_location">Do you want to use your current location?</string>
 
     <string name="no_location_detected">Unable to find your location!</string>
+    <string name="location_updated_message">Location Updated.</string>
 
 
 </resources>
