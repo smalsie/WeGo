@@ -11,6 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.daimajia.swipe.SwipeLayout;
+import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
+import com.wdullaer.swipeactionadapter.SwipeDirections;
 
 import java.util.ArrayList;
 
@@ -38,6 +43,8 @@ public class NearbyPlacesFragment extends Fragment {
 
          final ContactArrayAdaptor arrayAdapter = new ContactArrayAdaptor(getActivity(), nearbyPlaceItems);
 
+
+         
          listView.setAdapter(arrayAdapter);
 
 
@@ -45,9 +52,6 @@ public class NearbyPlacesFragment extends Fragment {
 
          return rootView;
      }
-
-
-
 
     private class ContactArrayAdaptor extends ArrayAdapter<NearbyPlaceItem> {
         private final Context context;
@@ -71,6 +75,47 @@ public class NearbyPlacesFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //Inflate events_list.xml
             View rowView = inflater.inflate(R.layout.nearby_places_item, parent, false);
+
+
+            SwipeLayout swipeLayout =  (SwipeLayout) rowView.findViewById(R.id.swipe);
+
+//set show mode.
+            swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+
+//set drag edge.
+            swipeLayout.setDragEdge(SwipeLayout.DragEdge.Right);
+
+            swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+                @Override
+                public void onClose(SwipeLayout layout) {
+                    //when the SurfaceView totally cover the BottomView.
+                }
+
+                @Override
+                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                    //you are swiping.
+                }
+
+                @Override
+                public void onStartOpen(SwipeLayout swipeLayout) {
+
+                }
+
+                @Override
+                public void onOpen(SwipeLayout layout) {
+                    //when the BottomView totally show.
+                }
+
+                @Override
+                public void onStartClose(SwipeLayout swipeLayout) {
+
+                }
+
+                @Override
+                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                    //when user's hand released.
+                }
+            });
 
             //Each of the textviews to add specified content to
             TextView place= (TextView) rowView.findViewById(R.id.nearby_place_location);
