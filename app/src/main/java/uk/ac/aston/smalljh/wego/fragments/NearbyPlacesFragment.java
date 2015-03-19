@@ -43,45 +43,7 @@ public class NearbyPlacesFragment extends Fragment {
 
          final ContactArrayAdaptor arrayAdapter = new ContactArrayAdaptor(getActivity(), nearbyPlaceItems);
 
-         SwipeLayout swipeLayout =  (SwipeLayout) rootView.findViewById(R.id.swipeUp);
 
-//set show mode.
-         swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
-
-//set drag edge.
-         swipeLayout.setDragEdge(SwipeLayout.DragEdge.Bottom);
-
-         swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
-             @Override
-             public void onClose(SwipeLayout layout) {
-                 //when the SurfaceView totally cover the BottomView.
-             }
-
-             @Override
-             public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-                 //you are swiping.
-             }
-
-             @Override
-             public void onStartOpen(SwipeLayout swipeLayout) {
-
-             }
-
-             @Override
-             public void onOpen(SwipeLayout layout) {
-                 //when the BottomView totally show.
-             }
-
-             @Override
-             public void onStartClose(SwipeLayout swipeLayout) {
-
-             }
-
-             @Override
-             public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-                 //when user's hand released.
-             }
-         });
          
          listView.setAdapter(arrayAdapter);
 
@@ -115,7 +77,7 @@ public class NearbyPlacesFragment extends Fragment {
             View rowView = inflater.inflate(R.layout.nearby_places_item, parent, false);
 
 
-            SwipeLayout swipeLayout =  (SwipeLayout) rowView.findViewById(R.id.swipe);
+           /* SwipeLayout swipeLayout =  (SwipeLayout) rowView.findViewById(R.id.swipe);
 
 //set show mode.
             swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
@@ -154,7 +116,7 @@ public class NearbyPlacesFragment extends Fragment {
                     //when user's hand released.
                 }
             });
-
+*/
             //Each of the textviews to add specified content to
             TextView place= (TextView) rowView.findViewById(R.id.nearby_place_location);
             TextView distance= (TextView) rowView.findViewById(R.id.nearby_place_distance_away);

@@ -8,7 +8,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -176,5 +178,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public void insert(String table, Map<String, Object> inserts) {
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String sql = "INSERT INTO " + table + " (";
+
+        ArrayList<String> keys = new ArrayList<String>();
+        ArrayList<Object> values = new ArrayList<Object>();
+
+        Iterator it = inserts.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            keys.add(pair.getKey().toString());
+            values.add(pair.getValue());
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+
+        String keyString = "";
+
+        for(String s : keys)
+            keyString += "`" + s + "`,";
+
+
+        keyString = keyString.substring(0, keyString.length()-1);
+
+
+        sql += keyString + ") VALUES(";
+
+        String valueString = "";
+
+        for(Object o : values)
+            valueString += "'" + o.toString() + "',";
+
+
+        valueString = valueString.substring(0, valueString.length()-1);
+
+
+        sql += valueString + ")";
+
+        Log.i("SQL", sql);
+
+        db.execSQL(sql);
+    }
 
 }
