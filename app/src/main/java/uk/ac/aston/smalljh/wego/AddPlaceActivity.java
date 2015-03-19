@@ -1,15 +1,19 @@
 package uk.ac.aston.smalljh.wego;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -58,6 +62,8 @@ public class AddPlaceActivity extends Activity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 2;
 
+    private static final int SELECT_PICTURE = 3;
+
     private EditText nameEditText;
 
     private ImageView image;
@@ -84,7 +90,13 @@ public class AddPlaceActivity extends Activity {
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,
+                        "Select Picture"), SELECT_PICTURE);
+
+                //dispatchTakePictureIntent();
             }
         });
 
@@ -164,9 +176,52 @@ public class AddPlaceActivity extends Activity {
 
                 break;
             }
+            case (SELECT_PICTURE): {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    Uri selectedImageUri = data.getData();
+                    mCurrentPhotoPath = getRealPathFromURI(selectedImageUri);
+                    Log.i("PIC", selectedImageUri.toString());
+                    Log.i("PIC", mCurrentPhotoPath + "g");
+
+                    setPic();
+                }
+
+                break;
+            }
 
         }
 
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public String getRealPathFromURI(Uri contentUri) {
+        String wholeID = DocumentsContract.getDocumentId(contentUri);
+
+// Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+// where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = getContentResolver().
+                query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        column, sel, new String[]{ id }, null);
+
+        String filePath = "";
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+
+
+
+        return filePath;
     }
 
 
@@ -318,7 +373,7 @@ public class AddPlaceActivity extends Activity {
         if (mCurrentPhotoPath != null) {
             setPic();
             galleryAddPic();
-            mCurrentPhotoPath = null;
+
         }
 
     }
