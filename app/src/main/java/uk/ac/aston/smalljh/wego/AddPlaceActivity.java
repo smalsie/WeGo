@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,6 +16,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -25,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,21 +37,24 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
+import uk.ac.aston.smalljh.wego.fragments.UserInfo;
 import uk.ac.aston.smalljh.wego.utils.DatePickerClass;
 import uk.ac.aston.smalljh.wego.utils.GPlaces;
 
 /**
  * Created by joshuahugh on 27/02/15.
  */
-public class AddPlaceActivity extends Activity {
+public class AddPlaceActivity extends ActionBarActivity implements AddCompanionDialog.AddCompanionDialogListener, AddNoteDialog.AddNoteDialogListener {
 
     private static final int LOCATION_RESULT_CODE = 1;
 
-    private AutoCompleteTextView location;
+    private EditText location;
 
     private DatabaseHelper dh;
 
@@ -55,10 +63,6 @@ public class AddPlaceActivity extends Activity {
     private TextView dateButton;
 
     private String date;
-
-    private static final String[] COUNTRIES = new String[] {
-            "Belgium", "France", "Italy", "Germany", "Spain", "Spainn"
-    };
 
     private static final int REQUEST_IMAGE_CAPTURE = 2;
 
@@ -70,20 +74,29 @@ public class AddPlaceActivity extends Activity {
 
     private String mCurrentPhotoPath;
 
+    private Button addCompanionBtn, addNoteBtn, submit;
+
+    private List<Note> notes = new ArrayList<Note>();
+    private List<String> companions = new ArrayList<String>();
+
+    private List<String> notesTitle = new ArrayList<String>();
+
+    private ArrayAdapter simpleAdapter, simpleAdapter2;
+
+    private ListView companionsList,notesList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.add_place);
 
         dh = new DatabaseHelper(getApplicationContext());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, COUNTRIES);
-        AutoCompleteTextView textView = (AutoCompleteTextView)
-                findViewById(R.id.location_auto_complete);
-        textView.setAdapter(adapter);
+        location = (EditText)
+                findViewById(R.id.add_place_location);
 
         image = (ImageView) findViewById(R.id.add_place_image);
 
@@ -128,7 +141,43 @@ public class AddPlaceActivity extends Activity {
 
         dateButton.setText(date);
 
-        location = (AutoCompleteTextView) findViewById(R.id.location_auto_complete);
+        submit = (Button) findViewById(R.id.add_place_submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submit();
+
+                Toast.makeText(getApplicationContext(), getText(R.string.place_added), Toast.LENGTH_LONG).show();
+
+                finish();
+            }
+        });
+
+        addCompanionBtn = (Button) findViewById(R.id.add_place_add_companion);
+        addCompanionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddCompanionDialog();
+            }
+        });
+
+        addNoteBtn = (Button) findViewById(R.id.add_place_add_notes);
+        addNoteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddNoteDialog();
+            }
+        });
+
+        companionsList = (ListView) findViewById(R.id.add_place_companions_listview);
+        notesList = (ListView) findViewById(R.id.add_place_notes_listview);
+
+        nameEditText = (EditText) findViewById(R.id.add_place_name);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        getSupportActionBar().setElevation(0);
 
 
     }
@@ -182,7 +231,7 @@ public class AddPlaceActivity extends Activity {
                     Uri selectedImageUri = data.getData();
                     mCurrentPhotoPath = getRealPathFromURI(selectedImageUri);
                     Log.i("PIC", selectedImageUri.toString());
-                    Log.i("PIC", mCurrentPhotoPath + "g");
+                    Log.i("PIC", mCurrentPhotoPath);
 
                     setPic();
                 }
@@ -224,12 +273,6 @@ public class AddPlaceActivity extends Activity {
         return filePath;
     }
 
-
-    private void createPlace() {
-
-        String name = "";
-
-    }
 
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerClass();
@@ -378,4 +421,103 @@ public class AddPlaceActivity extends Activity {
 
     }
 
+
+    private void submit() {
+        String name = nameEditText.getText().toString();
+
+        ContentValues c = new ContentValues();
+
+        DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
+
+        UserInfo ui = new UserInfo(getApplicationContext());
+
+        c.put(dh.placesUserId, ui.getUserID());
+        c.put(dh.placesTitle, name);
+        c.put(dh.placesLocation, location.getText().toString());
+        c.put(dh.placesDate, dateButton.getText().toString());
+
+        long id = dh.insert(dh.placesTable,c);
+
+        Log.i("SQL", id + "");
+
+        for(String companionName : companions) {
+            c = new ContentValues();
+
+            c.put(dh.placesCompanionsPlaceId, id);
+            c.put(dh.placesCompanionsCompanionName, companionName);
+
+            long compID = dh.insert(dh.placesCompanionsTable, c);
+
+            Log.i("SQL", compID + " Companion");
+
+        }
+
+        for(Note n : notes) {
+            c = new ContentValues();
+
+            c.put(dh.notesTitle, n.getTitle());
+            c.put(dh.notesNote, n.getNote());
+
+            long noteID = dh.insert(dh.notesTable, c);
+
+            Log.i("SQL", noteID + " Note");
+
+            c = new ContentValues();
+
+            c.put(dh.placesNotesNotesId, noteID);
+            c.put(dh.placesNotesTripId, id);
+
+            long tripNotesID = dh.insert(dh.placesNotesTable, c);
+
+            Log.i("SQL", tripNotesID + " trips Note");
+        }
+
+
+
+
+    }
+
+
+    private void showAddNoteDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        AddNoteDialog addCompanionDialog = new AddNoteDialog();
+        addCompanionDialog.show(fm, "fragment_edit_name");
+    }
+
+    @Override
+    public void onFinishEditDialog(String inputText) {
+        companions.add(inputText);
+
+        companionsListRefresh();
+
+    }
+
+
+    private void companionsListRefresh() {
+        simpleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, companions);
+
+        companionsList.setAdapter(simpleAdapter);
+
+    }
+
+    @Override
+    public void onFinishNoteEditDialog(String title, String note) {
+        notes.add(new Note(title, note));
+        notesTitle.add(title);
+
+        notesListRefresh();
+    }
+
+    private void notesListRefresh() {
+        simpleAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, notesTitle);
+
+        notesList.setAdapter(simpleAdapter2);
+
+    }
+
+    private void showAddCompanionDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        AddCompanionDialog addCompanionDialog = new AddCompanionDialog();
+        addCompanionDialog.show(fm, "fragment_edit_name");
+    }
 }

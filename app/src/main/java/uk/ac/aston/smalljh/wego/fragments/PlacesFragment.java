@@ -2,7 +2,10 @@ package uk.ac.aston.smalljh.wego.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +17,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import uk.ac.aston.smalljh.wego.AddTripActivity;
+import uk.ac.aston.smalljh.wego.DatabaseHelper;
 import uk.ac.aston.smalljh.wego.PlaceItem;
+import uk.ac.aston.smalljh.wego.PlaceViewActivity;
 import uk.ac.aston.smalljh.wego.R;
 
 public class PlacesFragment extends Fragment {
@@ -24,11 +30,10 @@ public class PlacesFragment extends Fragment {
              Bundle savedInstanceState) {
          View rootView = inflater.inflate(R.layout.places_main, container, false);
 
+         DatabaseHelper dh = new DatabaseHelper(getActivity().getApplicationContext());
+         SQLiteDatabase db = dh.getReadableDatabase();
 
-         ArrayList<PlaceItem> placeItems = new ArrayList<PlaceItem>();
-
-         placeItems.add(new PlaceItem("Eiffel Tower", "Paris, France", "You were here October 27th 2014", R.drawable.eifel));
-         placeItems.add(new PlaceItem("Arc de Triomphe", "Paris, France", "You were here from October 28th 2014", R.drawable.arc1));
+         ArrayList<PlaceItem> placeItems = dh.getPlaces(db);
 
 
          final ListView listView = (ListView) rootView.findViewById(R.id.listview);
@@ -68,20 +73,33 @@ public class PlacesFragment extends Fragment {
             //Inflate events_list.xml
             View rowView = inflater.inflate(R.layout.place_item, parent, false);
 
+            final PlaceItem placeItem = placeItems.get(position);
+
             //Each of the textviews to add specified content to
-            TextView title= (TextView) rowView.findViewById(R.id.nearby_place_location);
-            TextView city= (TextView) rowView.findViewById(R.id.nearby_place_distance_away);
-            TextView time= (TextView) rowView.findViewById(R.id.place_date);
-            ImageView image = (ImageView) rowView.findViewById(R.id.nearby_place_icon);
+            TextView title= (TextView) rowView.findViewById(R.id.place_title);
+            TextView location= (TextView) rowView.findViewById(R.id.place_location);
+            TextView date= (TextView) rowView.findViewById(R.id.place_date);
+            ImageView image = (ImageView) rowView.findViewById(R.id.place_icon);
 
             title.setText(placeItems.get(position).getTitle());
 
-            int pic = placeItems.get(position).getPic();
+            //int pic = placeItems.get(position).getPic();
 
-            city.setText(placeItems.get(position).getCity());
+            location.setText(placeItems.get(position).getLocation());
 
-            time.setText(placeItems.get(position).getTime());
-            image.setImageResource(pic);
+            date.setText(placeItems.get(position).getDate());
+            //image.setImageResource(pic);
+
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), PlaceViewActivity.class);
+
+                    intent.putExtra("Place", (Parcelable) placeItem);
+
+                    startActivity(intent);
+                }
+            });
 
 
             return rowView;

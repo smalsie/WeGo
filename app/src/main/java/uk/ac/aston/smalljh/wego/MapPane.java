@@ -438,7 +438,7 @@ public class MapPane extends Activity implements
 
 
             String key = "AIzaSyDk1f-jCsuh0L5UKe68iTfVhhTC6cIQ6gE";
-            String distance = "1000";
+            String distance = "100";
             String latlng = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
 
             String placesRequest = "https://maps.googleapis.com/maps/api/place/search/json"

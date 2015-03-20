@@ -29,7 +29,7 @@
         android:orientation="vertical"
         android:padding="25dp">
         <EditText
-            android:id="@+id/add_trip_name"
+            android:id="@+id/add_place_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="@string/name"
@@ -50,10 +50,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <AutoCompleteTextView
+            <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/location_auto_complete"
+                android:id="@+id/add_place_location"
                 android:hint="@string/location"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
@@ -76,26 +76,51 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/notes"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <EditText
-                android:id="@+id/add_trip_notes"
                 android:layout_width="fill_parent"
-                android:layout_height="240dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black" />
+                android:layout_height="wrap_content"
+                android:text="@string/companions"/>
+
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="124dp"
+                android:id="@+id/add_place_companions_listview"
+                android:clickable="true"></ListView>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_companion"
+                android:id="@+id/add_place_add_companion"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notes"/>
+
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="124dp"
+                android:id="@+id/add_place_notes_listview"></ListView>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_note"
+                android:id="@+id/add_place_add_notes"/>
 
         </LinearLayout>
 
 
         <Button
-            android:id="@+id/add_trip_submit"
+            android:id="@+id/add_place_submit"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:background="@color/purple"
@@ -104,7 +129,7 @@
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/add_trip_cancel"
+            android:id="@+id/add_place_cancel"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"

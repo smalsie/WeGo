@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:id="@+id/trip_add_place"
             android:background="@color/purple"
-            android:text="@string/add_place"
+            android:text="@string/add_trip"
             android:textColor="@color/white"/>
 
     </LinearLayout>

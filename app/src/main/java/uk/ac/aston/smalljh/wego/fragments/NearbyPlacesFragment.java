@@ -77,7 +77,7 @@ public class NearbyPlacesFragment extends Fragment {
             View rowView = inflater.inflate(R.layout.nearby_places_item, parent, false);
 
 
-           /* SwipeLayout swipeLayout =  (SwipeLayout) rowView.findViewById(R.id.swipe);
+           SwipeLayout swipeLayout =  (SwipeLayout) rowView.findViewById(R.id.swipe);
 
 //set show mode.
             swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
@@ -116,7 +116,7 @@ public class NearbyPlacesFragment extends Fragment {
                     //when user's hand released.
                 }
             });
-*/
+
             //Each of the textviews to add specified content to
             TextView place= (TextView) rowView.findViewById(R.id.nearby_place_location);
             TextView distance= (TextView) rowView.findViewById(R.id.nearby_place_distance_away);

@@ -12,12 +12,15 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 import uk.ac.aston.smalljh.wego.AddPlaceActivity;
+import uk.ac.aston.smalljh.wego.AddTripActivity;
 
 /**
  * Created by joshuahugh on 18/03/15.
  */
 public class DatePickerClass extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
+
+    private int returnCode = 10;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current time as the default values for the picker
@@ -26,7 +29,7 @@ public class DatePickerClass extends DialogFragment
         int month;
         int day;
 
-        if(getArguments().isEmpty()) {
+        if(getArguments() == null) {
 
             final Calendar c = Calendar.getInstance();
             year = c.get(Calendar.YEAR);
@@ -40,6 +43,9 @@ public class DatePickerClass extends DialogFragment
             day = getArguments().getInt("day");
 
         }
+
+
+
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
@@ -47,8 +53,11 @@ public class DatePickerClass extends DialogFragment
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        AddPlaceActivity activity = (AddPlaceActivity) getActivity();
-        activity.onFinishEditDialog(year, monthOfYear, dayOfMonth);
-        this.dismiss();
+
+            AddTripActivity activity = (AddTripActivity) getActivity();
+            activity.onFinishEditDialog(year, monthOfYear, dayOfMonth);
+            this.dismiss();
+
+
     }
 }

@@ -148,6 +148,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        //restoreActionBar();
         return true;
     }
 
@@ -191,10 +192,7 @@ public class MainActivity extends ActionBarActivity {
             frag = new TripFragment();
 
         } else if(position == 2) {
-            //frag = new PlacesFragment();
-
-             frag = new TestFragment();
-
+            frag = new PlacesFragment();
 
         }  else if(position == 3) {
             frag = new NearbyPlacesFragment();
@@ -203,7 +201,8 @@ public class MainActivity extends ActionBarActivity {
             frag = new GalleryFragment();
 
         }  else if(position == 5) {
-            frag = new AddTripFragment();
+            Intent intent = new Intent(getApplicationContext(), AddTripActivity.class);
+            startActivity(intent);
 
         } else if(position == 6) {
 

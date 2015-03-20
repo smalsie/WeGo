@@ -27,8 +27,8 @@ public class PlacesPlacesFragment extends PlacesFrag {
 
          ArrayList<PlaceItem> placeItems = new ArrayList<PlaceItem>();
 
-         placeItems.add(new PlaceItem("Eiffel Tower", "Paris, France", "You were here October 27th 2014", R.drawable.eifel));
-         placeItems.add(new PlaceItem("Arc de Triomphe", "Paris, France", "You were here from October 28th 2014", R.drawable.arc1));
+         //placeItems.add(new PlaceItem("Eiffel Tower", "Paris, France", "You were here October 27th 2014", R.drawable.eifel));
+        // placeItems.add(new PlaceItem("Arc de Triomphe", "Paris, France", "You were here from October 28th 2014", R.drawable.arc1));
 
 
          final ListView listView = (ListView) rootView.findViewById(R.id.listview);
@@ -81,9 +81,9 @@ public class PlacesPlacesFragment extends PlacesFrag {
 
             int pic = placeItems.get(position).getPic();
 
-            city.setText(placeItems.get(position).getCity());
+            //city.setText(placeItems.get(position).getCity());
 
-            time.setText(placeItems.get(position).getTime());
+           // time.setText(placeItems.get(position).getTime());
             image.setImageResource(pic);
 
 

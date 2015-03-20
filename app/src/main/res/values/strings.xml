@@ -43,6 +43,7 @@
 
     <string name="name">Name</string>
     <string name="date">Date</string>
+    <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="location">Location</string>
     <string name="notes">Notes</string>
@@ -66,6 +67,19 @@
 
     <string name="no_location_detected">Unable to find your location!</string>
     <string name="location_updated_message">Location Updated.</string>
+
+    <string name="companions">Companions</string>
+    <string name="add_companion">Add Companion</string>
+
+    <string name="add_note">Add Note</string>
+
+    <string name="title">Title</string>
+
+    <string name="place_added">Place Added</string>
+    <string name="trip_added">Trip Added</string>
+    <string name="title_activity_place_view">PlaceViewActivity</string>
+
+    <string name="no_companions">No Companions</string>
 
 
 </resources>
