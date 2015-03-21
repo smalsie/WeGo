@@ -25,8 +25,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import uk.ac.aston.smalljh.wego.fragments.AddPlaceFragment;
-import uk.ac.aston.smalljh.wego.fragments.AddTripFragment;
 import uk.ac.aston.smalljh.wego.fragments.GalleryFragment;
 import uk.ac.aston.smalljh.wego.fragments.HomeFragment;
 import uk.ac.aston.smalljh.wego.fragments.NearbyPlacesFragment;
@@ -215,7 +213,7 @@ public class MainActivity extends ActionBarActivity {
 
             drawerLayout.closeDrawer(drawerList);
 
-            Intent intent = new Intent(getApplicationContext(), MapPane.class);
+            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
             startActivity(intent);
 
         }

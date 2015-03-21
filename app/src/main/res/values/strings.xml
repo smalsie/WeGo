@@ -80,6 +80,11 @@
     <string name="title_activity_place_view">PlaceViewActivity</string>
 
     <string name="no_companions">No Companions</string>
+    <string name="no_notes">No Notes</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 
 </resources>

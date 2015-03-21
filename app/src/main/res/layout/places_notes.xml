@@ -6,15 +6,15 @@
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/places_companions_listview"
+        android:id="@+id/places_notes_listview"
         android:visibility="gone"
         android:layout_weight="1"></ListView>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/no_companions"
-        android:id="@+id/places_companions_none"
+        android:text="@string/no_notes"
+        android:id="@+id/places_notes_none"
         android:layout_weight="1"/>
 
     <LinearLayout
@@ -28,9 +28,9 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:id="@+id/place_companion_add_button"
+        android:id="@+id/place_notes_add_button"
         android:background="@color/purple"
-        android:text="@string/add_companion"
+        android:text="@string/add_note"
         android:textColor="@color/white"/>
 
 </LinearLayout>

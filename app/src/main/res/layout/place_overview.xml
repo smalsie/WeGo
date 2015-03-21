@@ -4,62 +4,66 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/place_overview_main_image"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/eifel" />
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/place_overview_main_image"
+            android:layout_alignLeft="@id/place_overview_main_image"
+            android:layout_alignRight="@id/place_overview_main_image"
+            android:layout_alignTop="@id/place_overview_main_image"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/place_overview_main_image"
-                android:layout_width="fill_parent"
-                android:layout_height="250dp"
-                android:layout_marginBottom="0dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/eifel" />
 
-            <LinearLayout
-                android:layout_width="fill_parent"
+            <TextView
+                android:id="@+id/place_overview_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:text="New York"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="New York"
-                    android:id="@+id/place_overview_title" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="You visited BROOKYLN and QUEENS between October 27th 2014 and October 31st 2014 with Courtney Sullivan"
-                    android:id="@+id/place_overview_desc" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/place_overview_map"
-                android:layout_width="fill_parent"
-                android:layout_height="250dp"
-                android:layout_marginBottom="0dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/map" />
-
+            <TextView
+                android:id="@+id/place_overview_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="You visited BROOKYLN and QUEENS between October 27th 2014 and October 31st 2014 with Courtney Sullivan"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
 
+    </LinearLayout>
 
-    </ScrollView>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/place_overview_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/place_overview_main_image"
+        android:layout_weight="1" />
+
+
+
+    </LinearLayout>

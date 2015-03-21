@@ -1,5 +1,6 @@
 package uk.ac.aston.smalljh.wego;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,20 +32,36 @@ import uk.ac.aston.smalljh.wego.fragments.places.PlacesOverviewFragment;
 import uk.ac.aston.smalljh.wego.fragments.places.PlacesPlacesFragment;
 
 
-public class PlaceViewActivity extends ActionBarActivity {
+public class PlaceViewActivity extends ActionBarActivity implements AddCompanionDialog.AddCompanionDialogListener, AddNoteDialog.AddNoteDialogListener {
 
     private PagerSlidingTabStrip tabs;
     private PlaceItem placeItem;
+    private PlacesViewAdapter pagesViewAdaptor;
+
+    private ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_view);
 
-        placeItem = (PlaceItem) getIntent().getParcelableExtra("Place");
+        long placeID = (long) getIntent().getLongExtra("Place", 0);
 
-        ViewPager pager = (ViewPager) findViewById(R.id.places_pager);
-        pager.setAdapter(new PlacesViewAdapter(getSupportFragmentManager()));
+        if(placeID == 0)
+            finish();
+
+        DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
+
+        SQLiteDatabase db = dh.getReadableDatabase();
+
+        placeItem = dh.getPlace(placeID, db);
+
+        Log.i("LATLNG", placeItem.getGPlace().getLatitude() + " : " + placeItem.getGPlace().getLongitude());
+
+        pagesViewAdaptor = new PlacesViewAdapter(getSupportFragmentManager());
+
+        pager = (ViewPager) findViewById(R.id.places_pager);
+        pager.setAdapter(pagesViewAdaptor);
 
         // Bind the tabs to the ViewPager
         tabs = (PagerSlidingTabStrip) findViewById(R.id.places_tabs);
@@ -104,6 +122,23 @@ public class PlaceViewActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFinishEditDialog(String inputText) {
+        placeItem.putCompanion(inputText, getApplicationContext());
+        pagesViewAdaptor.refresh(1);
+
+        pager.setCurrentItem(1, false);
+
+    }
+
+    @Override
+    public void onFinishNoteEditDialog(String title, String note) {
+        placeItem.putNote(title, note, getApplicationContext());
+        pagesViewAdaptor.refresh(2);
+
+        pager.setCurrentItem(2, false);
+    }
+
     private class PlacesViewAdapter extends FragmentPagerAdapter {
 
         private FragmentManager fm;
@@ -117,7 +152,6 @@ public class PlaceViewActivity extends ActionBarActivity {
             fragments.add(new PlacesOverviewFragment());
 
             fragments.add(new PlacesCompanionsFragment());
-            fragments.add(new PlacesMapFragment());
             fragments.add(new PlacesNotesFragment());
 
             for(PlacesFrag pf : fragments)
@@ -138,6 +172,10 @@ public class PlaceViewActivity extends ActionBarActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return fragments.get(position).getName();
+        }
+
+        public void refresh(int index) {
+            fragments.get(index).refresh();
         }
     }
 

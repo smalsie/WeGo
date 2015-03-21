@@ -16,21 +16,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,9 +35,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
+import uk.ac.aston.smalljh.wego.arrayadaptors.NoteArrayAdaptor;
 import uk.ac.aston.smalljh.wego.fragments.UserInfo;
 import uk.ac.aston.smalljh.wego.utils.DatePickerClass;
 import uk.ac.aston.smalljh.wego.utils.GPlaces;
@@ -81,7 +76,8 @@ public class AddPlaceActivity extends ActionBarActivity implements AddCompanionD
 
     private List<String> notesTitle = new ArrayList<String>();
 
-    private ArrayAdapter simpleAdapter, simpleAdapter2;
+    private ArrayAdapter simpleAdapter;
+    private NoteArrayAdaptor noteArrayAdaptor;
 
     private ListView companionsList,notesList;
 
@@ -429,11 +425,25 @@ public class AddPlaceActivity extends ActionBarActivity implements AddCompanionD
 
         DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
 
+        if(place == null) {
+            place = new GPlaces(location.getText().toString(), "", null, null);
+        }
+
+        c.put(dh.LocationLatitude, place.getLatitude());
+        c.put(dh.LocationLongitude, place.getLongitude());
+        c.put(dh.LocationName, place.getName());
+        c.put(dh.LocationVicinity, place.getVicinity());
+
+        long locationInsertID = dh.insert(dh.locationTable, c);
+
+
         UserInfo ui = new UserInfo(getApplicationContext());
+
+        c = new ContentValues();
 
         c.put(dh.placesUserId, ui.getUserID());
         c.put(dh.placesTitle, name);
-        c.put(dh.placesLocation, location.getText().toString());
+        c.put(dh.placesLocationID, locationInsertID);
         c.put(dh.placesDate, dateButton.getText().toString());
 
         long id = dh.insert(dh.placesTable,c);
@@ -465,7 +475,7 @@ public class AddPlaceActivity extends ActionBarActivity implements AddCompanionD
             c = new ContentValues();
 
             c.put(dh.placesNotesNotesId, noteID);
-            c.put(dh.placesNotesTripId, id);
+            c.put(dh.placesNotesPlaceId, id);
 
             long tripNotesID = dh.insert(dh.placesNotesTable, c);
 
@@ -509,9 +519,9 @@ public class AddPlaceActivity extends ActionBarActivity implements AddCompanionD
     }
 
     private void notesListRefresh() {
-        simpleAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, notesTitle);
+        noteArrayAdaptor = new NoteArrayAdaptor(this, notes);
 
-        notesList.setAdapter(simpleAdapter2);
+        notesList.setAdapter(noteArrayAdaptor);
 
     }
 

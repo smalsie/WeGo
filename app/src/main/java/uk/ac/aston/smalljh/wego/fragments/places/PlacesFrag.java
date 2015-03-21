@@ -16,4 +16,6 @@ public abstract class PlacesFrag extends Fragment {
     public void setPlaceItem(PlaceItem placeItem) {
         this.placeItem = placeItem;
     }
+
+    public void refresh() { }
 }

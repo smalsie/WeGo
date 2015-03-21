@@ -120,5 +120,14 @@ public class GPlaces implements Parcelable {
         longitude = in.readDouble();
     }
 
-    public GPlaces() { }
+    public GPlaces(String name, String vicinity,Double latitude, Double longitude) {
+
+        this.name = name;
+        this.vicinity = vicinity;
+        this.latitude = latitude;
+        this.longitude = longitude;
+
+    }
+
+    public GPlaces() {}
 }

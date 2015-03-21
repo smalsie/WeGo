@@ -20,6 +20,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import uk.ac.aston.smalljh.wego.fragments.UserInfo;
+import uk.ac.aston.smalljh.wego.utils.GPlaces;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DBNAME = "WeGO";
@@ -73,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String placesId = "PlaceID";
     public static final String placesUserId = "UserID";
     public static final String placesTitle = "PlaceTitle";
-    public static final String placesLocation = "PlaceLocation";
+    public static final String placesLocationID = "PlaceLocationID";
     public static final String placesDate = "PlaceStartDate";
 
     //PlaceImages
@@ -89,7 +90,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //PlaceNotes
     public static final String placesNotesTable = "PlaceNotes";
     public static final String placesNotesNotesId = "NotesID";
-    public static final String placesNotesTripId = "PlaceID";
+    public static final String placesNotesPlaceId = "PlaceID";
+
+    //Location
+    public static final String locationTable = "Location";
+    public static final String locationID = "LocationID";
+    public static final String LocationLatitude = "Latitude";
+    public static final String LocationLongitude = "Longitude";
+    public static final String LocationName = "Name";
+    public static final String LocationVicinity = "Vicinity";
 
     public Context c;
 
@@ -149,7 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + " INTEGER PRIMARY KEY  AUTOINCREMENT, "
                 + placesUserId + " INTEGER, "
                 + placesTitle + " TEXT, "
-                + placesLocation + " TEXT, "
+                + placesLocationID + " INTEGER, "
                 + placesDate + " TEXT)";
         Log.i("DBHELPER", sql);
         db.execSQL(sql);
@@ -178,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // create PlaceNotes table
         sql = "CREATE TABLE " + placesNotesTable + " (" + placesNotesNotesId
                 + " INTEGER, "
-                + placesNotesTripId + " INTEGER)";
+                + placesNotesPlaceId + " INTEGER)";
         Log.i("DBHELPER", sql);
         db.execSQL(sql);
 
@@ -190,7 +199,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.i("DBHELPER", sql);
         db.execSQL(sql);
 
+        // create Location table
+        sql = "CREATE TABLE " + locationTable + " (" + locationID
+                + " INTEGER PRIMARY KEY  AUTOINCREMENT, "
+                + LocationLatitude + " DOUBLE, "
+                + LocationLongitude + " DOUBLE, "
+                + LocationName + " TEXT, "
+                + LocationVicinity + " TEXT)";
+        Log.i("DBHELPER", sql);
+        db.execSQL(sql);
+
         insertInitialFeeds(db, "smalsie", "1234");
+        insertInitialFeeds(db, "smalsiee", "12334");
     }
 
     private void insertInitialFeeds(SQLiteDatabase db, String username, String password) {
@@ -219,8 +239,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public long insert(String table, ContentValues inserts) {
 
-        SQLiteDatabase db = getReadableDatabase();
-
+        SQLiteDatabase db = getWritableDatabase();
         /*String sql = "INSERT INTO " + table + " (";
 
         ArrayList<String> keys = new ArrayList<String>();
@@ -356,7 +375,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] projection = {
                 placesId,
                 placesTitle,
-                placesLocation,
+                placesLocationID,
                 placesDate,
         };
 
@@ -393,15 +412,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             c.getColumnIndexOrThrow(placesTitle)
                     );
 
-                    String location = c.getString(
-                            c.getColumnIndexOrThrow(placesLocation)
+                    long locationID = c.getLong(
+                            c.getColumnIndexOrThrow(placesLocationID)
                     );
 
                     String date = c.getString(
                             c.getColumnIndexOrThrow(placesDate)
                     );
 
-                    PlaceItem p = new PlaceItem(title, location, date);
+                    PlaceItem p = new PlaceItem(placeID, title, getLocation(locationID), date);
 
                     List<String> companions = getCompanionsPlaces(placeID, db);
 
@@ -425,6 +444,73 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return places;
+
+    }
+
+    public PlaceItem getPlace(long placeID, SQLiteDatabase db) {
+        int savedUserID = new UserInfo(c).getUserID();
+
+        String[] projection = {
+                placesId,
+                placesTitle,
+                placesLocationID,
+                placesDate,
+        };
+
+        String whereClause = placesUserId + "=? AND " + placesId + "=?";
+
+        String[] whereArgs = new String[]{
+                savedUserID + "",
+                placeID + "",
+        };
+
+        String sortOrder =
+                placesId;
+
+
+        Cursor c = db.query(
+                placesTable,  // The table to query
+                projection,                               // The columns to return
+                whereClause,                                // The columns for the WHERE clause
+                whereArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        if (c.getCount() == 0)
+            return null;
+        else {
+
+           c.moveToFirst();
+
+                    String title = c.getString(
+                            c.getColumnIndexOrThrow(placesTitle)
+                    );
+
+                    long locationID = c.getLong(
+                            c.getColumnIndexOrThrow(placesLocationID)
+                    );
+
+                    String date = c.getString(
+                            c.getColumnIndexOrThrow(placesDate)
+                    );
+
+                    PlaceItem p = new PlaceItem(placeID, title, getLocation(locationID), date);
+
+                    List<String> companions = getCompanionsPlaces(placeID, db);
+
+                    List<Note> notes = getNotesPlaces(placeID, db);
+
+                    for(String comp : companions)
+                        p.addCompanion(comp);
+
+                    for(Note note : notes)
+                        p.addNote(note);
+
+                return p;
+
+            }
 
     }
 
@@ -580,7 +666,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 placesNotesNotesId,
         };
 
-        String whereClause = placesNotesTripId + "=?";
+        String whereClause = placesNotesPlaceId + "=?";
 
         String[] whereArgs = new String[]{
                 id + "",
@@ -665,5 +751,77 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return null;
 
+    }
+
+    public GPlaces getLocation(long locationIDToGet) {
+        String[] projection = {
+                LocationLatitude,
+                LocationLongitude,
+                LocationName,
+                LocationVicinity,
+        };
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String whereClause = locationID + "=?";
+
+        String[] whereArgs = new String[] {
+                locationIDToGet + "",
+        };
+
+        String sortOrder =
+                locationID;
+
+
+        Cursor c = db.query(
+                locationTable,  // The table to query
+                projection,                               // The columns to return
+                whereClause,                                // The columns for the WHERE clause
+                whereArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        if(c.getCount() != 0) {
+
+            c.moveToFirst();
+
+            Double lat = c.getDouble(
+                    c.getColumnIndexOrThrow(LocationLatitude)
+            );
+            Double lng = c.getDouble(
+                    c.getColumnIndexOrThrow(LocationLongitude)
+            );
+
+            String name = c.getString(
+                    c.getColumnIndexOrThrow(LocationName)
+            );
+
+            String vicinity = c.getString(
+                    c.getColumnIndexOrThrow(LocationVicinity)
+            );
+
+            return new GPlaces(name, vicinity, lat, lng);
+
+        }
+
+        return null;
+
+
+
+    }
+
+    public ArrayList<GPlaces> getGPlaces() {
+        SQLiteDatabase db = getReadableDatabase();
+
+        ArrayList<GPlaces> gPlaces = new ArrayList<GPlaces>();
+
+        ArrayList<PlaceItem> places = getPlaces(db);
+
+        for(PlaceItem p : places)
+            gPlaces.add(p.getGPlace());
+
+        return gPlaces;
     }
 }

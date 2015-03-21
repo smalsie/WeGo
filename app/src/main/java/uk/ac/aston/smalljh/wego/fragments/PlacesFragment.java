@@ -85,7 +85,7 @@ public class PlacesFragment extends Fragment {
 
             //int pic = placeItems.get(position).getPic();
 
-            location.setText(placeItems.get(position).getLocation());
+            location.setText(placeItems.get(position).getGPlace().getName());
 
             date.setText(placeItems.get(position).getDate());
             //image.setImageResource(pic);
@@ -95,7 +95,7 @@ public class PlacesFragment extends Fragment {
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), PlaceViewActivity.class);
 
-                    intent.putExtra("Place", (Parcelable) placeItem);
+                    intent.putExtra("Place", placeItem.getID());
 
                     startActivity(intent);
                 }
