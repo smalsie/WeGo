@@ -58,6 +58,12 @@ public class MapPane extends FragmentActivity implements
 
     private boolean nearbyPlaces = false;
 
+    private ArrayList<GPlaces> places;
+
+    private ListView listView;
+
+    private int lastClickedLocation = -1;
+
     protected static final String TAG = "basic-location-sample";
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
@@ -147,21 +153,6 @@ public class MapPane extends FragmentActivity implements
             }
         });
 
-        Button currentLocationButton = (Button) findViewById(R.id.map_use_current_location);
-        currentLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("Location", "Yo");
-                setResult(Activity.RESULT_OK, resultIntent);
-                finish();
-            }
-        });
-
-
-
-        StringBuilder builder = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
 
         mRequestingLocationUpdates = false;
         mLastUpdateTime = "";
@@ -203,7 +194,6 @@ public class MapPane extends FragmentActivity implements
             if (savedInstanceState.keySet().contains(LAST_UPDATED_TIME_STRING_KEY)) {
                 mLastUpdateTime = savedInstanceState.getString(LAST_UPDATED_TIME_STRING_KEY);
             }
-            updateUI();
         }
     }
 
@@ -214,6 +204,8 @@ public class MapPane extends FragmentActivity implements
         this.map = map;
 
         map.setMyLocationEnabled(true);
+
+        updateUI();
 
 
     }
@@ -324,16 +316,22 @@ public class MapPane extends FragmentActivity implements
             // fill in the layout with the data
             Log.i("Places", placeDetail.size() + "");
 
-            ArrayList<GPlaces> places = new ArrayList<GPlaces>();
+            places = new ArrayList<GPlaces>();
 
-            for (int i = 0; (i < foundPlaces.size() && i < 50); i++)
+            for (int i = 0; (i < foundPlaces.size()); i++) {
                 places.add(foundPlaces.get(i));
 
-            final ListView listView = (ListView) findViewById(R.id.listview_for_places);
+
+                addPoint(foundPlaces.get(i));
+            }
+
+            listView = (ListView) findViewById(R.id.listview_for_places);
 
             final PlacesArrayAdaptor arrayAdapter = new PlacesArrayAdaptor(activity, places);
 
             listView.setAdapter(arrayAdapter);
+
+
         }
     }
 
@@ -342,7 +340,6 @@ public class MapPane extends FragmentActivity implements
         private final Context context;
         private final ArrayList<GPlaces> places;
 
-        private int lastClickedLocation = -1;
 
         public PlacesArrayAdaptor(Context context, ArrayList<GPlaces> places) {
 
@@ -409,34 +406,69 @@ public class MapPane extends FragmentActivity implements
             });
 
 
-            addPoint(gPlaces);
-
             return rowView;
         }
 
-        private void addPoint(final GPlaces gPlace) {
-
-            LatLng latlng = new LatLng(gPlace.getLatitude(), gPlace.getLongitude());
 
 
-            map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-                    if(!nearbyPlaces)
-                        selectLocation(gPlace);
+    }
+    private void addPoint(final GPlaces gPlace) {
+
+        LatLng latlng = new LatLng(gPlace.getLatitude(), gPlace.getLongitude());
+
+
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                if(!nearbyPlaces) {
+                    int position = 0;
+                    for(int i = 0; i < markerList.size(); i++) {
+                        if(markerList.get(i).equals(marker)) {
+                            position = i;
+
+                            lastClickedLocation = position;
+
+                            break;
+                        }
+                    }
+
+                    if(position != 0) {
+
+                        selectLocation(places.get(position));
+                    }
                 }
-            });
+            }
+        });
 
-            Marker marker = map.addMarker(new MarkerOptions()
-                    .title(gPlace.getName())
-                    .snippet(gPlace.getVicinity())
-                    .position(latlng)
-                    .visible(true));
-
-            markerList.add(marker);
+        Marker marker = map.addMarker(new MarkerOptions()
+                .title(gPlace.getName())
+                .snippet(gPlace.getVicinity())
+                .position(latlng)
+                .visible(true));
 
 
-        }
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                int position = 0;
+                for(int i = 0; i < markerList.size(); i++) {
+                    if(markerList.get(i).equals(marker)) {
+                        position = i;
+
+                        lastClickedLocation = position;
+
+                        break;
+                    }
+                }
+
+                listView.smoothScrollToPosition(position);
+
+                return false;
+            }
+        });
+
+        markerList.add(marker);
 
 
     }
@@ -519,7 +551,7 @@ public class MapPane extends FragmentActivity implements
 
 
             String key = "AIzaSyDk1f-jCsuh0L5UKe68iTfVhhTC6cIQ6gE";
-            String distance = "350";
+            String distance = "150";
             String latlng = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
 
             String placesRequest = "https://maps.googleapis.com/maps/api/place/search/json"
@@ -537,7 +569,7 @@ public class MapPane extends FragmentActivity implements
             moveMap(latlngOBJ);
 
         } else {
-            Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
         }
     }
 

@@ -45,8 +45,7 @@ public class TripFragment extends Fragment {
         listView.setAdapter(arrayAdapter);
 
         Button addTrip = (Button) rootView.findViewById(R.id.trip_add_place);
-        addTrip.setText("AddTrip");
-
+        addTrip.setText("Add Trip");
         addTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import uk.ac.aston.smalljh.wego.AddPlaceActivity;
+import uk.ac.aston.smalljh.wego.AddTripActivity;
 import uk.ac.aston.smalljh.wego.utils.DatabaseHelper;
 import uk.ac.aston.smalljh.wego.PlaceItem;
 import uk.ac.aston.smalljh.wego.PlaceViewActivity;
@@ -29,7 +31,7 @@ public class PlacesFragment extends Fragment {
 	 @Override
      public View onCreateView(LayoutInflater inflater, ViewGroup container,
              Bundle savedInstanceState) {
-         View rootView = inflater.inflate(R.layout.trips_main, container, false);
+         View rootView = inflater.inflate(R.layout.trip_places, container, false);
 
          DatabaseHelper dh = new DatabaseHelper(getActivity().getApplicationContext());
          SQLiteDatabase db = dh.getReadableDatabase();
@@ -43,7 +45,17 @@ public class PlacesFragment extends Fragment {
 
          listView.setAdapter(arrayAdapter);
 
-         Button button = (Button) rootView.findViewById(R.id.)
+         Button addTrip = (Button) rootView.findViewById(R.id.trip_add_place);
+         addTrip.setText("Add Place");
+
+         addTrip.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent = new Intent(getActivity().getApplicationContext(), AddPlaceActivity.class);
+                 startActivity(intent);
+             }
+         });
+
 
 
          getActivity().setTitle(R.string.your_places);

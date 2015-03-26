@@ -6,140 +6,77 @@
         jumboMode="false"
         revision="20.0.0"
         sha1="a60a5e993c98c864010053cb901b7eab25306568">
-        <dex dex="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/pre-dexed/debug/gson-2.2.4-7362203fb6692aebde1090459f8cb26b344d1306.jar" />
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/gson-2.2.4-7362203fb6692aebde1090459f8cb26b344d1306.jar" />
     </item>
     <item
-        jar="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/exploded-aar/com.astuetz/pagerslidingtabstrip/1.0.1/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="7912610ed96381c25c36d986eba422731b9641b6">
-        <dex dex="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/pre-dexed/debug/classes-f318bfb4ff17bd44b37f83df04938920448d4088.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.0/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="efeda77c808750cb670ee9c48d8a1835d89dbcb2">
-        <dex dex="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/pre-dexed/debug/classes-3ea3f1684d84532ae21ca0dcbcf172c1562bf286.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-30998de7dbf51e4415091f2f4fa13583136a3b11.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="d1bf02de1c56d942e7a9d093b8610ba1ef4128e3">
-        <dex dex="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/pre-dexed/debug/classes-97d9164be2a0533f2a7a1231db858dc811221132.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/exploded-aar/com.wdullaer/swipeactionadapter/1.3.2/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="b2f180bc69a34395b1db70e7acfef69be3f7b59d">
-        <dex dex="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/pre-dexed/debug/classes-da551eb2cb30f28d642fb85f2821312fe37555fa.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-584a4ed79c35a1a931229f9f55b93c990628b099.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
-        <dex dex="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-df7ab13c3655bce2668edb8656119426b8daf328.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
-        <dex dex="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/pre-dexed/debug/classes-2865a637b77e5a5dbacbfc3574b0edf6b8729790.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="962e8b12569c56dbdcf8367eb4eac8bb129cd18f">
-        <dex dex="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.2-7465a9d2154101414cfea1132b51d0c908d3343a.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/exploded-aar/com.ms-square/expandableTextView/0.1.3/classes.jar"
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.ms-square/expandableTextView/0.1.3/classes.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="65eefff54aacfa7c9ee02428e6b218b8c791cfb7">
-        <dex dex="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-2dac6eab23d8710ddc50386d7e66c6b35a389999.jar" />
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-427045504dbc088094b8351f096e6155f543cd82.jar" />
     </item>
     <item
-        jar="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.wdullaer/swipeactionadapter/1.3.2/classes.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-6149f0cd94ccddd340d45f9997e18e43879dd443.jar" />
+        sha1="b2f180bc69a34395b1db70e7acfef69be3f7b59d">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-44865da52a9d0b6a28459a6f66d7c2175f6b0e9d.jar" />
     </item>
     <item
-        jar="/home/joshuahugh/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.2/support-annotations-21.0.2.jar"
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="99373741f99a0556ee293c41e8faa1ca3ae8a4e6">
-        <dex dex="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.2-684938ef68113f81ad4e92eb6f1a3e05592e3948.jar" />
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-e2a8f71437ea5e33a3ddda16b576eca5e123d96b.jar" />
     </item>
     <item
-        jar="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/exploded-aar/com.daimajia.swipelayout/library/1.1.8/classes.jar"
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.3/classes.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="71078cb0460b50cead8a2fc9f5529673aee0bbce">
-        <dex dex="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/pre-dexed/debug/classes-2d827ab51575fe2f1721b6559dedbb8a3f6409fe.jar" />
+        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-34429bd21538cb2c2736c91185c92ebbcf8e9ed6.jar" />
     </item>
     <item
-        jar="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/exploded-aar/com.astuetz/pagerslidingtabstrip/1.0.1/classes.jar"
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="7912610ed96381c25c36d986eba422731b9641b6">
-        <dex dex="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-f7e51e01fa3592f9f21972936fafeef95c449e7c.jar" />
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-53387d480b7ad54b1144bb3214babbafb11c9368.jar" />
+    </item>
+    <item
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-d27b9d36fdf7a06af91cad5f7846457de7c9fd2d.jar" />
     </item>
     <item
         jar="/home/joshuahugh/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-f38484254ab222677f9540c8933b426017403f0d.jar" />
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-f38484254ab222677f9540c8933b426017403f0d.jar" />
     </item>
     <item
-        jar="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/exploded-aar/com.wdullaer/swipeactionadapter/1.3.2/classes.jar"
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.astuetz/pagerslidingtabstrip/1.0.1/classes.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="b2f180bc69a34395b1db70e7acfef69be3f7b59d">
-        <dex dex="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-760e27030e9cc177e9ca5ecbd5b6458ace475aef.jar" />
+        sha1="7912610ed96381c25c36d986eba422731b9641b6">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-02bf16320a4b7030f8215a4d9105c5eb1b044300.jar" />
     </item>
     <item
-        jar="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.3/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
-        <dex dex="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-a50a97ff946b2585c6333dadfe12ac0ff31c767f.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="7ae2d38807a43b2f2185ff4089a92c790b579e54">
-        <dex dex="/home/joshuahugh/mobiledev/WeGo2/app/build/intermediates/pre-dexed/debug/classes-e34ff2c7223858f4d818d160289ca01c7bda1903.jar" />
-    </item>
-    <item
-        jar="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/exploded-aar/com.daimajia.swipelayout/library/1.1.8/classes.jar"
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.daimajia.swipelayout/library/1.1.8/classes.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="71078cb0460b50cead8a2fc9f5529673aee0bbce">
-        <dex dex="/home/joshuahugh/android_dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-2c65e7b087401d46620e983d2a4fd3a68bc8fd2e.jar" />
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/classes-5382fb82e2f8bffb9ad3447aabca7286ccae9f9d.jar" />
+    </item>
+    <item
+        jar="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/home/joshuahugh/mobile-dev/WeGo/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-6ce4623f19756f6f74da57d76744f17d54655401.jar" />
     </item>
 
 </items>
