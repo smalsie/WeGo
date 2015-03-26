@@ -41,8 +41,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d4e4587b-2830-497f-82da-579bf49f5d9e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/locate.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/model_data.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="WeGo.iws" />
@@ -1862,7 +1860,11 @@
       <created>1427364255620</created>
       <updated>1427364255620</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Nicer Fragments">
+      <created>1427364564247</created>
+      <updated>1427364564247</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
