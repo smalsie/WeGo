@@ -7,25 +7,26 @@
     <ListView
         android:id="@+id/listview"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_height="fill_parent"
+        android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_weight="0"
-        android:orientation="horizontal"
-        android:background="@color/purple">
+        android:background="@color/purple"
+        android:gravity="bottom"
+        android:orientation="horizontal">
 
 
         <Button
+            android:id="@+id/home_add_trip"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:id="@+id/home_add_trip"
             android:layout_weight="0.5"
             android:background="@color/purple"
             android:text="@string/add_trip"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
 
         <LinearLayout
@@ -33,7 +34,7 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:orientation="vertical">
-            
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
@@ -42,15 +43,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/purple"
-                android:layout_marginTop="40dp"></LinearLayout>
+                android:layout_marginTop="40dp"
+                android:background="@color/purple"></LinearLayout>
 
         </LinearLayout>
-        
+
         <Button
+            android:id="@+id/home_add_place"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:id="@+id/home_add_place"
             android:layout_weight="0.5"
             android:background="@color/purple"
             android:text="@string/add_place"

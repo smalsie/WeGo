@@ -79,12 +79,12 @@ public class PlacesPlacesFragment extends PlacesFrag {
 
             title.setText(placeItems.get(position).getTitle());
 
-            int pic = placeItems.get(position).getPic();
+            //int pic = placeItems.get(position).getPic();
 
             //city.setText(placeItems.get(position).getCity());
 
            // time.setText(placeItems.get(position).getTime());
-            image.setImageResource(pic);
+            //image.setImageResource(pic);
 
 
             return rowView;

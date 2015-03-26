@@ -5,30 +5,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import uk.ac.aston.smalljh.wego.AddTripActivity;
-import uk.ac.aston.smalljh.wego.DatabaseHelper;
+import uk.ac.aston.smalljh.wego.utils.DatabaseHelper;
 import uk.ac.aston.smalljh.wego.PlaceItem;
 import uk.ac.aston.smalljh.wego.PlaceViewActivity;
 import uk.ac.aston.smalljh.wego.R;
+import uk.ac.aston.smalljh.wego.utils.GPlaces;
 
 public class PlacesFragment extends Fragment {
-	
+
+
 	 @Override
      public View onCreateView(LayoutInflater inflater, ViewGroup container,
              Bundle savedInstanceState) {
-         View rootView = inflater.inflate(R.layout.places_main, container, false);
+         View rootView = inflater.inflate(R.layout.trips_main, container, false);
 
          DatabaseHelper dh = new DatabaseHelper(getActivity().getApplicationContext());
          SQLiteDatabase db = dh.getReadableDatabase();
@@ -41,6 +42,8 @@ public class PlacesFragment extends Fragment {
          final ContactArrayAdaptor arrayAdapter = new ContactArrayAdaptor(getActivity(), placeItems);
 
          listView.setAdapter(arrayAdapter);
+
+         Button button = (Button) rootView.findViewById(R.id.)
 
 
          getActivity().setTitle(R.string.your_places);
@@ -81,13 +84,15 @@ public class PlacesFragment extends Fragment {
             TextView date= (TextView) rowView.findViewById(R.id.place_date);
             ImageView image = (ImageView) rowView.findViewById(R.id.place_icon);
 
-            title.setText(placeItems.get(position).getTitle());
+            title.setText(placeItem.getTitle());
 
             //int pic = placeItems.get(position).getPic();
+            GPlaces gPlaces = placeItem.getGPlace();
 
-            location.setText(placeItems.get(position).getGPlace().getName());
+            if(gPlaces != null)
+                location.setText(gPlaces.getName());
 
-            date.setText(placeItems.get(position).getDate());
+            date.setText(placeItem.getDate());
             //image.setImageResource(pic);
 
             rowView.setOnClickListener(new View.OnClickListener() {
@@ -101,8 +106,20 @@ public class PlacesFragment extends Fragment {
                 }
             });
 
+            if((placeItem.getPic() != null) && (placeItem.getPic().getID() > 0)) {
+
+                image.setImageBitmap(placeItem.getPic().getImage());
+
+                image.invalidate();
+            }
+
 
             return rowView;
+        }
+
+        private void setPic(ImageView image, String picture) {
+            // Get the dimensions of the View
+
         }
 
         public String getName() {

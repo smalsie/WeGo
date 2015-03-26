@@ -23,6 +23,8 @@ public class GPlaces implements Parcelable {
     private Double latitude;
     private Double longitude;
 
+    private long locID = 0;
+
     public String getId() {
         return id;
     }
@@ -120,14 +122,19 @@ public class GPlaces implements Parcelable {
         longitude = in.readDouble();
     }
 
-    public GPlaces(String name, String vicinity,Double latitude, Double longitude) {
+    public GPlaces(String name, String vicinity,Double latitude, Double longitude, long locID) {
 
         this.name = name;
         this.vicinity = vicinity;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.locID = locID;
 
     }
 
     public GPlaces() {}
+
+    public long getLocID() {
+        return locID;
+    }
 }

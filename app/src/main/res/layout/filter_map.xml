@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="25dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Start Date"/>
+
+                    <DatePicker
+                    android:id="@+id/dpResult"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="End Date"/>
+                <DatePicker
+                    android:id="@+id/dpResultEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/add_trip_submit"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@color/purple"
+                android:text="@string/submit"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/add_trip_cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@color/purple"
+                android:text="@string/cancel"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+
+    </ScrollView>

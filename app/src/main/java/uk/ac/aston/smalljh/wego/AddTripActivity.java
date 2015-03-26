@@ -1,67 +1,55 @@
 package uk.ac.aston.smalljh.wego;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import uk.ac.aston.smalljh.wego.fragments.UserInfo;
+import uk.ac.aston.smalljh.wego.utils.DatabaseHelper;
 import uk.ac.aston.smalljh.wego.utils.DatePickerClass;
 import uk.ac.aston.smalljh.wego.utils.GPlaces;
 
 /**
  * Created by joshuahugh on 27/02/15.
  */
-public class AddTripActivity extends ActionBarActivity implements AddCompanionDialog.AddCompanionDialogListener, AddNoteDialog.AddNoteDialogListener {
+public class AddTripActivity extends AddObject implements DatePickerClass.DatePickerReturn {
 
-    private String name = "";
     private String startDate = "";
     private String endDate = "";
 
     private int returnCode = 100;
 
-    private GPlaces place;
+    private Button startDateBtn, endDateBtn;
 
-    private EditText nameInput, locationInput;
+    private TripItem tripItem;
 
-    private Button startDateBtn, endDateBtn, addCompanionBtn, addNoteBtn, submitBtn;
+    private boolean startDateSet = false;
+    private boolean endDateSet = false;
 
-    private List<String> companions = new ArrayList<String>();
 
-    private List<String> notesTitle = new ArrayList<String>();
-
-    private List<Note> notes = new ArrayList<Note>();
-
-    private ListView companionsList,notesList;
-
-    private ArrayAdapter simpleAdapter, simpleAdapter2;
-
-    private final int START_DATE_REQUEST_CODE = 1;
-    private final int END_DATE_REQUEST_CODE = 2;
+    private final int START_DATE_REQUEST_CODE = 4;
+    private final int END_DATE_REQUEST_CODE = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_trip);
 
-        nameInput = (EditText) findViewById(R.id.add_trip_name);
-        locationInput = (EditText) findViewById(R.id.add_trip_location);
+        isPlace = false;
+
+        nameEditText = (EditText) findViewById(R.id.add_trip_name);
+        locationEditText = (EditText) findViewById(R.id.add_trip_location);
 
         startDateBtn = (Button) findViewById(R.id.add_trip_start_date);
         startDateBtn.setOnClickListener(new View.OnClickListener() {
@@ -79,37 +67,59 @@ public class AddTripActivity extends ActionBarActivity implements AddCompanionDi
             }
         });
 
-        addCompanionBtn = (Button) findViewById(R.id.add_trip_add_companion);
-        addCompanionBtn.setOnClickListener(new View.OnClickListener() {
+        locationEditText = (EditText)
+                findViewById(R.id.add_trip_location);
+
+        image = (ImageView) findViewById(R.id.add_trip_image);
+
+        image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddCompanionDialog();
+
+                getImage();
             }
         });
 
-        addNoteBtn = (Button) findViewById(R.id.add_trip_add_notes);
-        addNoteBtn.setOnClickListener(new View.OnClickListener() {
+        ImageButton locationButton = (ImageButton) findViewById(R.id.add_trip_locate_button);
+        locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddNoteDialog();
+                Intent intent = new Intent(getApplicationContext(), MapPane.class);
+                startActivityForResult(intent, LOCATION_RESULT_CODE);
+
             }
         });
 
-        submitBtn = (Button) findViewById(R.id.add_trip_submit);
-        submitBtn.setOnClickListener(new View.OnClickListener() {
+        submit = (Button) findViewById(R.id.add_trip_submit);
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submit();
+                if (submit()) {
+
+                    Toast.makeText(getApplicationContext(), getText(R.string.trip_added), Toast.LENGTH_LONG).show();
+
+                    if (editing) {
+                        Intent resultIntent = new Intent();
+                        setResult(Activity.RESULT_OK, resultIntent);
+                    }
+
+                    finish();
+
+                }
             }
         });
-
-        companionsList = (ListView) findViewById(R.id.add_trip_companions_listview);
-        notesList = (ListView) findViewById(R.id.add_trip_notes_listview);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         getSupportActionBar().setElevation(0);
+
+        getSupportActionBar().setTitle("Add New Trip");
+
+        long tripID = getIntent().getLongExtra("TripID", 0);
+
+        if (tripID != 0)
+            edit(tripID);
 
     }
 
@@ -120,7 +130,7 @@ public class AddTripActivity extends ActionBarActivity implements AddCompanionDi
 
         Bundle mBundle = new Bundle();
 
-        if(!startDate.equals("")) {
+        if (!startDate.equals("")) {
 
             int[] dateArr = getDayMonthYear(startDate);
 
@@ -138,152 +148,241 @@ public class AddTripActivity extends ActionBarActivity implements AddCompanionDi
         newFragment.show(getFragmentManager(), "timePicker");
     }
 
-    private int[] getDayMonthYear(String date) {
-
-        String[] dateStr = date.split("/");
-
-        int[] dateArr = new int[3];
-
-        for(int i = 0; i < 3; i++)
-            dateArr[i] = Integer.parseInt(dateStr[i]);
-
-
-        return dateArr;
-
-
-    }
-
+    @Override
     public void onFinishEditDialog(int year, int month, int day) {
 
-        if(returnCode == START_DATE_REQUEST_CODE) {
+        if (returnCode == START_DATE_REQUEST_CODE) {
 
             startDate = niceDate(year, month, day);
 
             startDateBtn.setText(startDate);
 
-        } else if(returnCode == END_DATE_REQUEST_CODE) {
+            startDateSet = true;
+
+        } else if (returnCode == END_DATE_REQUEST_CODE) {
 
             endDate = niceDate(year, month, day);
 
             endDateBtn.setText(endDate);
 
+            endDateSet = true;
+
         }
 
 
     }
 
-    private String niceDate(int year, int month, int day) {
+    protected boolean submit() {
 
-        month++;
+        String name = nameEditText.getText().toString();
+        if (name.equals("")) {
 
-        String dayString = "" + day;
-        String monthString = "" + month;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please Enter in a Name!")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //do things
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
 
-        if(day < 10)
-            dayString = "0" + day;
+            return false;
+        } else if(!startDateSet) {
 
-        if(month < 10)
-            monthString = "0" + month;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please Select A Start Date!")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //do things
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
 
-        return dayString + "/" + monthString + "/" + year;
+            return false;
+
+        }  else if(!endDateSet) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please Select An End Date!")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //do things
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+
+            return false;
+
+        } else if(locationEditText.getText().toString().equals("")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please Select A Location!")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //do things
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+
+            return false;
+        } else {
+
+            ContentValues c = new ContentValues();
+
+            DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
+
+
+
+
+            if (place == null) {
+                place = new GPlaces(locationEditText.getText().toString(), "", null, null, 0);
+            }
+
+
+            c.put(dh.LocationLatitude, place.getLatitude());
+            c.put(dh.LocationLongitude, place.getLongitude());
+            c.put(dh.LocationName, place.getName());
+            c.put(dh.LocationVicinity, place.getVicinity());
+
+            long locationInsertID;
+
+            if (editing) {
+
+                locationInsertID = locID;
+
+                String whereClause = dh.locationID + "=?";
+
+                String[] whereArgs = new String[]{
+                        locID + "",
+                };
+
+                int affected = dh.update(dh.locationTable, c, whereClause, whereArgs);
+
+                Log.i("Edit Place", affected + "");
+
+
+            } else {
+
+                locationInsertID = dh.insert(dh.locationTable, c);
+
+            }
+
+
+            UserInfo ui = new UserInfo(getApplicationContext());
+
+            long imageID = 0;
+
+            if (!mCurrentPhotoPath.equals("")) {
+
+                c = new ContentValues();
+
+                c.put(dh.imagesUserId, ui.getUserID());
+                c.put(dh.imagesSRC, mCurrentPhotoPath);
+                c.put(dh.imagesTAG, tag);
+                c.put(dh.imagesLocationLatitude, imageLat);
+                c.put(dh.imagesLocationLongitude, imageLng);
+
+                if (editing)
+                    imageID = tripItem.getImageID();
+
+                if (editing && (imageID > 0)) {
+
+                    String whereClause = dh.imagesId + "=?";
+
+                    String[] whereArgs = new String[]{
+                            imageID + "",
+                    };
+
+                    int affected = dh.update(dh.imagesTable, c, whereClause, whereArgs);
+
+                    Log.i("Edit Place Image", affected + "");
+                } else {
+
+
+                    imageID = dh.insert(dh.imagesTable, c);
+
+                }
+
+            }
+
+            c = new ContentValues();
+
+            c.put(dh.tripsUserId, ui.getUserID());
+            c.put(dh.tripsTitle, name);
+            c.put(dh.tripsLocationID, locationInsertID);
+            c.put(dh.tripsStartDate, startDate);
+            c.put(dh.tripsEndDate, endDate);
+            c.put(dh.tripImage, imageID);
+
+            long id = 0;
+
+            if (editing) {
+
+                String whereClause = dh.tripsId + "=?";
+
+                String[] whereArgs = new String[]{
+                        tripItem.getID() + "",
+                };
+
+                int affected = dh.update(dh.tripsTable, c, whereClause, whereArgs);
+
+                Log.i("Edit Place Place", affected + "");
+
+            } else {
+
+                id = dh.insert(dh.tripsTable, c);
+
+            }
+
+
+        }
+
+        return true;
     }
 
-    private void showAddCompanionDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        AddCompanionDialog addCompanionDialog = new AddCompanionDialog();
-        addCompanionDialog.show(fm, "fragment_edit_name");
-    }
+    private void edit(long tripID) {
 
-    private void showAddNoteDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        AddNoteDialog addCompanionDialog = new AddNoteDialog();
-        addCompanionDialog.show(fm, "fragment_edit_name");
-    }
+        endDateSet = startDateSet = true;
 
-    @Override
-    public void onFinishEditDialog(String inputText) {
-       companions.add(inputText);
+        getSupportActionBar().setTitle("Edit Trip");
 
-        companionsListRefresh();
-
-    }
-
-
-    private void companionsListRefresh() {
-        simpleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, companions);
-
-        companionsList.setAdapter(simpleAdapter);
-
-    }
-
-    @Override
-    public void onFinishNoteEditDialog(String title, String note) {
-        notes.add(new Note(title, note));
-        notesTitle.add(title);
-
-        notesListRefresh();
-    }
-
-    private void notesListRefresh() {
-        simpleAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, notesTitle);
-
-        notesList.setAdapter(simpleAdapter2);
-
-    }
-
-    private void submit() {
-        name = nameInput.getText().toString();
-
-        ContentValues c = new ContentValues();
+        editing = true;
 
         DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
 
-        UserInfo ui = new UserInfo(getApplicationContext());
+        tripItem = dh.getTrip(dh.getWritableDatabase(), tripID);
 
-        c.put(dh.tripsUserId, ui.getUserID());
-        c.put(dh.tripsTitle, name);
-        c.put(dh.tripsLocation, locationInput.getText().toString());
-        c.put(dh.tripsStartDate, startDate);
-        c.put(dh.tripsEndDate, endDate);
+        place = tripItem.getGPlace();
 
-        long id = dh.insert(dh.tripsTable,c);
+        locID = place.getLocID();
 
-        Log.i("SQL", id + "");
 
-        for(String companionName : companions) {
-            c = new ContentValues();
 
-            c.put(dh.tripsCompanionsId, id);
-            c.put(dh.tripsCompanionsName, companionName);
+        nameEditText.setText(tripItem.getTitle());
 
-            long compID = dh.insert(dh.tripsCompanionsTable, c);
+        startDate = tripItem.getStartDate();
+        endDate = tripItem.getEndDate();
 
-            Log.i("SQL", compID + " Companion");
+        startDateBtn.setText(startDate);
+        endDateBtn.setText(endDate);
+        locationEditText.setText(place.getName());
 
+
+        if ((tripItem.getPic() != null) && tripItem.getPic().getID() > 0) {
+            image.setImageBitmap(tripItem.getPic().getImage());
+
+            imageLat = tripItem.getPic().getLatitude();
+            imageLng = tripItem.getPic().getLongitude();
+            //setPic();
         }
-
-        for(Note n : notes) {
-            c = new ContentValues();
-
-            c.put(dh.notesTitle, n.getTitle());
-            c.put(dh.notesNote, n.getNote());
-
-            long noteID = dh.insert(dh.notesTable, c);
-
-            Log.i("SQL", noteID + " Note");
-
-            c = new ContentValues();
-
-            c.put(dh.tripsNotesNotesId, noteID);
-            c.put(dh.tripsNotesTripId, id);
-
-            long tripNotesID = dh.insert(dh.tripsNotesTable, c);
-
-            Log.i("SQL", tripNotesID + " trips Note");
-        }
-
-
-
 
     }
+
 }

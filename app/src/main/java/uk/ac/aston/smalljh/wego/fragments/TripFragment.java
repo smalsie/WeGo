@@ -2,6 +2,7 @@ package uk.ac.aston.smalljh.wego.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,17 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.daimajia.swipe.SwipeLayout;
-
 import java.util.ArrayList;
 
-import uk.ac.aston.smalljh.wego.DatabaseHelper;
+import uk.ac.aston.smalljh.wego.AddTripActivity;
+import uk.ac.aston.smalljh.wego.MapPane;
+import uk.ac.aston.smalljh.wego.TripViewActivity;
+import uk.ac.aston.smalljh.wego.utils.DatabaseHelper;
+import uk.ac.aston.smalljh.wego.PlaceViewActivity;
 import uk.ac.aston.smalljh.wego.R;
 import uk.ac.aston.smalljh.wego.TripItem;
+import uk.ac.aston.smalljh.wego.utils.GPlaces;
 
 public class TripFragment extends Fragment {
 
@@ -38,6 +43,17 @@ public class TripFragment extends Fragment {
         final ContactArrayAdaptor arrayAdapter = new ContactArrayAdaptor(getActivity(), tripItems);
 
         listView.setAdapter(arrayAdapter);
+
+        Button addTrip = (Button) rootView.findViewById(R.id.trip_add_place);
+        addTrip.setText("AddTrip");
+
+        addTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), AddTripActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         getActivity().setTitle(R.string.your_trips);
@@ -68,64 +84,46 @@ public class TripFragment extends Fragment {
             //get the LayoutInflater
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //Inflate events_list.xml
+
             View rowView = inflater.inflate(R.layout.trip_item, parent, false);
 
 
-              SwipeLayout swipeLayout =  (SwipeLayout) rowView.findViewById(R.id.trip_swipe);
-
-//set show mode.
-            swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
-
-//set drag edge.
-            swipeLayout.setDragEdge(SwipeLayout.DragEdge.Right);
-
-            swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
-                @Override
-                public void onClose(SwipeLayout layout) {
-                    //when the SurfaceView totally cover the BottomView.
-                }
-
-                @Override
-                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-                    //you are swiping.
-                }
-
-                @Override
-                public void onStartOpen(SwipeLayout swipeLayout) {
-
-                }
-
-                @Override
-                public void onOpen(SwipeLayout layout) {
-                    //when the BottomView totally show.
-                }
-
-                @Override
-                public void onStartClose(SwipeLayout swipeLayout) {
-
-                }
-
-                @Override
-                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-                    //when user's hand released.
-                }
-            });
-
+            final TripItem tripItem = tripItems.get(position);
 
             //Each of the textviews to add specified content to
             TextView title= (TextView) rowView.findViewById(R.id.trip_name);
-            TextView city= (TextView) rowView.findViewById(R.id.trip_location);
-            TextView time= (TextView) rowView.findViewById(R.id.trip_date);
+            TextView location= (TextView) rowView.findViewById(R.id.trip_location);
+            TextView date= (TextView) rowView.findViewById(R.id.trip_date);
             ImageView image = (ImageView) rowView.findViewById(R.id.trip_icon);
 
-            title.setText(tripItems.get(position).getTitle());
+            title.setText(tripItem.getTitle());
 
-            //int pic = tripItems.get(position).getPic();
+            //int pic = placeItems.get(position).getPic();
+            GPlaces gPlaces = tripItem.getGPlace();
 
-            city.setText(tripItems.get(position).getLocation());
+            if(gPlaces != null)
+                location.setText(gPlaces.getName());
 
-            time.setText(tripItems.get(position).getStartDate());
+            date.setText(tripItem.getStartDate() + " - " + tripItem.getEndDate());
             //image.setImageResource(pic);
+
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), TripViewActivity.class);
+
+                    intent.putExtra("TRIP", tripItem.getID());
+
+                    startActivity(intent);
+                }
+            });
+
+            if((tripItem.getPic() != null) && (tripItem.getPic().getID() > 0)) {
+
+                image.setImageBitmap(tripItem.getPic().getImage());
+
+                image.invalidate();
+            }
 
 
             return rowView;

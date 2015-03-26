@@ -1,13 +1,10 @@
 package uk.ac.aston.smalljh.wego;
 
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,10 +26,9 @@ import uk.ac.aston.smalljh.wego.fragments.GalleryFragment;
 import uk.ac.aston.smalljh.wego.fragments.HomeFragment;
 import uk.ac.aston.smalljh.wego.fragments.NearbyPlacesFragment;
 import uk.ac.aston.smalljh.wego.fragments.PlacesFragment;
-import uk.ac.aston.smalljh.wego.fragments.TestActivity;
-import uk.ac.aston.smalljh.wego.fragments.TestFragment;
 import uk.ac.aston.smalljh.wego.fragments.TripFragment;
 import uk.ac.aston.smalljh.wego.fragments.UserInfo;
+import uk.ac.aston.smalljh.wego.utils.DatabaseHelper;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -51,6 +47,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new DatabaseHelper(getApplicationContext()).getAllImages();
 
         Log.i("SIGN UP", "Main Activity");
 
@@ -193,7 +191,9 @@ public class MainActivity extends ActionBarActivity {
             frag = new PlacesFragment();
 
         }  else if(position == 3) {
-            frag = new NearbyPlacesFragment();
+            Intent intent = new Intent(getApplicationContext(), MapPane.class);
+            intent.putExtra("Nearby", 100);
+            startActivity(intent);
 
         }  else if(position == 4) {
             frag = new GalleryFragment();

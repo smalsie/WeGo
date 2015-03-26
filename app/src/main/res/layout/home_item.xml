@@ -54,20 +54,5 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="193dp"
-            android:layout_below="@id/home_main_content">
-
-
-            <ImageView
-                android:id="@+id/map"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="0dp"
-                android:src="@drawable/map" />
-
-        </LinearLayout>
-
     </LinearLayout>
 </RelativeLayout>

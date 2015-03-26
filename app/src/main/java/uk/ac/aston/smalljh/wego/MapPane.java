@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.StrictMode;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,22 +44,25 @@ import java.net.URLConnection;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import uk.ac.aston.smalljh.wego.utils.GPlaces;
 import uk.ac.aston.smalljh.wego.utils.GooglePlacesUtils;
 
-public class MapPane extends Activity implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, LocationListener {
+public class MapPane extends FragmentActivity implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, LocationListener, FilterMapDialog.FilterMapDialogListener {
 
     private boolean fullscreen;
     private Activity activity;
     protected GoogleApiClient mGoogleApiClient;
 
+    private boolean nearbyPlaces = false;
+
     protected static final String TAG = "basic-location-sample";
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 2000;
 
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
@@ -76,6 +81,8 @@ public class MapPane extends Activity implements
      */
     protected LocationRequest mLocationRequest;
 
+    private List<Marker> markerList;
+
     /**
      * Represents a geographical location.
      */
@@ -92,14 +99,20 @@ public class MapPane extends Activity implements
      */
     protected String mLastUpdateTime;
 
+    private GoogleMap map;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
 
+        nearbyPlaces = getIntent().getIntExtra("Nearby", 0) > 0;
+
 
         activity = this;
+
+        markerList = new ArrayList<Marker>();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -144,6 +157,8 @@ public class MapPane extends Activity implements
                 finish();
             }
         });
+
+
 
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
@@ -196,6 +211,7 @@ public class MapPane extends Activity implements
     @Override
     public void onMapReady(GoogleMap map) {
 
+        this.map = map;
 
         map.setMyLocationEnabled(true);
 
@@ -260,6 +276,11 @@ public class MapPane extends Activity implements
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
+    @Override
+    public void onFinishNoteEditDialog(String title, String note) {
+
+    }
+
 
     private class PlacesFeed extends AsyncTask<String, Void, ArrayList<GPlaces>> {
 
@@ -284,6 +305,8 @@ public class MapPane extends Activity implements
                     } catch (Exception e) {
                     }
                 }
+
+
                 return foundPlaces;
             } catch (JSONException ex) {
                 ex.printStackTrace();
@@ -319,6 +342,8 @@ public class MapPane extends Activity implements
         private final Context context;
         private final ArrayList<GPlaces> places;
 
+        private int lastClickedLocation = -1;
+
         public PlacesArrayAdaptor(Context context, ArrayList<GPlaces> places) {
 
             super(context, R.layout.map, places);
@@ -342,22 +367,78 @@ public class MapPane extends Activity implements
             TextView title = (TextView) rowView.findViewById(R.id.google_places_name);
             TextView address = (TextView) rowView.findViewById(R.id.google_places_address);
 
-            title.setText(places.get(position).getName());
-            address.setText(places.get(position).getVicinity());
+            GPlaces gPlaces = places.get(position);
+
+            title.setText(gPlaces.getName());
+            address.setText(gPlaces.getVicinity());
 
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra("Place", (Parcelable)places.get(position));
-                    setResult(Activity.RESULT_OK, resultIntent);
-                    finish();
+
+                    if(!nearbyPlaces) {
+
+                        if(lastClickedLocation == position) {
+                            selectLocation(places.get(position));
+                        } else {
+
+                            Marker marker = markerList.get(position);
+
+                            marker.showInfoWindow();
+
+
+                            LatLng latlng = marker.getPosition();
+
+                            moveMap(latlng);
+
+                            lastClickedLocation = position;
+
+                        }
+                    } else {
+                        Marker marker = markerList.get(position);
+
+                        map.getUiSettings().setMapToolbarEnabled(true);
+                        marker.showInfoWindow();
+
+                        LatLng latlng = marker.getPosition();
+
+                        moveMap(latlng);
+                    }
+
                 }
             });
 
 
+            addPoint(gPlaces);
+
             return rowView;
         }
+
+        private void addPoint(final GPlaces gPlace) {
+
+            LatLng latlng = new LatLng(gPlace.getLatitude(), gPlace.getLongitude());
+
+
+            map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    if(!nearbyPlaces)
+                        selectLocation(gPlace);
+                }
+            });
+
+            Marker marker = map.addMarker(new MarkerOptions()
+                    .title(gPlace.getName())
+                    .snippet(gPlace.getVicinity())
+                    .position(latlng)
+                    .visible(true));
+
+            markerList.add(marker);
+
+
+        }
+
+
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -438,7 +519,7 @@ public class MapPane extends Activity implements
 
 
             String key = "AIzaSyDk1f-jCsuh0L5UKe68iTfVhhTC6cIQ6gE";
-            String distance = "100";
+            String distance = "350";
             String latlng = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
 
             String placesRequest = "https://maps.googleapis.com/maps/api/place/search/json"
@@ -446,7 +527,15 @@ public class MapPane extends Activity implements
                     + "&radius=" + distance
                     + "&key=" + key;
             PlacesFeed detailTask = new PlacesFeed();
+
+            removePoints();
+
             detailTask.execute(placesRequest);
+
+            LatLng latlngOBJ = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+
+            moveMap(latlngOBJ);
+
         } else {
             Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
         }
@@ -506,6 +595,30 @@ public class MapPane extends Activity implements
         savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
         savedInstanceState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void moveMap(LatLng latlng) {
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setZoomGesturesEnabled(true);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
+    }
+
+    public void removePoints() {
+        for (Marker marker : markerList) {
+            marker.remove();
+        }
+
+        Log.i("MAP", "Remove markers");
+
+        markerList.clear();
+        map.clear();
+    }
+
+    private void selectLocation(GPlaces place) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("Place", (Parcelable) place);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
 
 }

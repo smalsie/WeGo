@@ -17,6 +17,8 @@
             android:layout_height="match_parent"
             android:name="com.google.android.gms.maps.MapFragment">
 
+
+
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,7 +36,8 @@
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:text="@string/add_this_location"
-        android:id="@+id/map_use_current_location"/>
+        android:id="@+id/map_use_current_location"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"

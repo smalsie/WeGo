@@ -1,11 +1,19 @@
 package uk.ac.aston.smalljh.wego;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.Fragment;
+import android.os.Environment;
+import android.os.Handler;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,19 +25,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ShareActionProvider;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import uk.ac.aston.smalljh.wego.fragments.places.PlacesCompanionsFragment;
 import uk.ac.aston.smalljh.wego.fragments.places.PlacesFrag;
 import uk.ac.aston.smalljh.wego.fragments.places.PlacesGalleryFragment;
-import uk.ac.aston.smalljh.wego.fragments.places.PlacesMapFragment;
 import uk.ac.aston.smalljh.wego.fragments.places.PlacesNotesFragment;
 import uk.ac.aston.smalljh.wego.fragments.places.PlacesOverviewFragment;
-import uk.ac.aston.smalljh.wego.fragments.places.PlacesPlacesFragment;
+import uk.ac.aston.smalljh.wego.utils.DatabaseHelper;
+import uk.ac.aston.smalljh.wego.utils.ImageItem;
 
 
 public class PlaceViewActivity extends ActionBarActivity implements AddCompanionDialog.AddCompanionDialogListener, AddNoteDialog.AddNoteDialogListener {
@@ -40,62 +53,90 @@ public class PlaceViewActivity extends ActionBarActivity implements AddCompanion
 
     private ViewPager pager;
 
+    private Handler messageHandler = new Handler();
+
+    private long placeID;
+
+    private final int EDIT_PLACE_CODE = 1;
+
+    public static final int REQUEST_IMAGE_CAPTURE = 2;
+    public static final int SELECT_PICTURE = 3;
+
+    public static final int TAG_PICTURE = 4;
+
+    protected String mCurrentPhotoPath = "";
+
+
+    private boolean camera = false;
+
+
+    protected String tag = "";
+    private ShareActionProvider mShareActionProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_view);
 
-        long placeID = (long) getIntent().getLongExtra("Place", 0);
+        placeID = getIntent().getLongExtra("Place", 0);
 
-        if(placeID == 0)
-            finish();
+        int value = getIntent().getIntExtra("Value", 0);
 
-        DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
+        if(value == SELECT_PICTURE)
+            getImageFromStorage();
+        else if(value == REQUEST_IMAGE_CAPTURE)
+            dispatchTakePictureIntent();
 
-        SQLiteDatabase db = dh.getReadableDatabase();
+            if (placeID == 0)
+                finish();
 
-        placeItem = dh.getPlace(placeID, db);
+            DatabaseHelper dh = new DatabaseHelper(getApplicationContext());
 
-        Log.i("LATLNG", placeItem.getGPlace().getLatitude() + " : " + placeItem.getGPlace().getLongitude());
+            SQLiteDatabase db = dh.getReadableDatabase();
 
-        pagesViewAdaptor = new PlacesViewAdapter(getSupportFragmentManager());
+            placeItem = dh.getPlace(placeID, db);
 
-        pager = (ViewPager) findViewById(R.id.places_pager);
-        pager.setAdapter(pagesViewAdaptor);
+            Log.i("LATLNG", placeItem.getGPlace().getLatitude() + " : " + placeItem.getGPlace().getLongitude());
 
-        // Bind the tabs to the ViewPager
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.places_tabs);
+            pagesViewAdaptor = new PlacesViewAdapter(getSupportFragmentManager());
 
-        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
-                .getDisplayMetrics());
-        pager.setPageMargin(pageMargin);
+            pager = (ViewPager) findViewById(R.id.places_pager);
+            pager.setAdapter(pagesViewAdaptor);
 
-        tabs.setTextColorResource(R.color.white);
+            // Bind the tabs to the ViewPager
+            tabs = (PagerSlidingTabStrip) findViewById(R.id.places_tabs);
 
+            final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+                    .getDisplayMetrics());
+            pager.setPageMargin(pageMargin);
 
-        tabs.setIndicatorColorResource(R.color.white);
-        tabs.setShouldExpand(true);
-
-        changeColor(getResources().getColor(R.color.white));
-
-        tabs.setViewPager(pager);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            Window window = this.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(this.getResources().getColor(R.color.dark_purple));
-
-        }
+            tabs.setTextColorResource(R.color.white);
 
 
-        getSupportActionBar().setTitle(placeItem.getTitle());
+            tabs.setIndicatorColorResource(R.color.white);
+            tabs.setShouldExpand(true);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+            changeColor(getResources().getColor(R.color.white));
 
-        getSupportActionBar().setElevation(0);
+            tabs.setViewPager(pager);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                Window window = this.getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.setStatusBarColor(this.getResources().getColor(R.color.dark_purple));
+
+            }
+
+            getSupportActionBar().setTitle(placeItem.getTitle());
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+
+            getSupportActionBar().setElevation(0);
+
+
 
     }
 
@@ -104,6 +145,9 @@ public class PlaceViewActivity extends ActionBarActivity implements AddCompanion
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_place_view, menu);
+
+
+        // Return true to display menu
         return true;
     }
 
@@ -115,8 +159,110 @@ public class PlaceViewActivity extends ActionBarActivity implements AddCompanion
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_edit) {
+
+            Intent intent = new Intent(getApplicationContext(), AddPlaceActivity.class);
+
+            intent.putExtra("PlaceID", placeItem.getID());
+
+            startActivityForResult(intent, EDIT_PLACE_CODE);
+
             return true;
+        } else if (id == R.id.action_view_map) {
+
+            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+
+            intent.putExtra("PLACE", placeItem.getID());
+
+            startActivity(intent);
+
+            return true;
+        } else if(id == R.id.menu_item_share) {
+
+            String text = "Have a look at Joshes Place, " + placeItem.getTitle();
+
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+            sharingIntent.setType("*/*");
+
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Joshes Place, " + placeItem.getTitle());
+
+            ArrayList<Uri> imageUris = new ArrayList<Uri>();
+
+
+            if((placeItem.getPic() != null) && (placeItem.getPic().getID() > 0)) {
+                String pathofBmp = MediaStore.Images.Media.insertImage(getContentResolver(), placeItem.getPic().getImage(), placeItem.getPic().getTitle(), null);
+                Uri bmpUri = Uri.parse(pathofBmp);
+
+                imageUris.add(bmpUri);
+            }
+
+
+
+            List<Note> notes = placeItem.getNotes();
+
+
+
+            if(notes.size() > 0) {
+
+                text += "\n\nNotes:\n";
+
+                for (Note n : notes) {
+                    text += n.getTitle() + ", \n" + n.getNote() + "\n";
+
+
+                }
+
+            }
+
+            List<String> companions = placeItem.getCompanions();
+
+            if(companions.size() > 0) {
+
+                text += "\nCompanions:\n";
+
+                for (String s : companions) {
+                   text += s + "\n";
+
+
+                }
+
+            }
+
+            text +="\nHere from: " + placeItem.getDate();
+
+
+
+            ArrayList<ImageItem> images = placeItem.getImages();
+
+
+            if(images.size() > 0) {
+
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, "Images:\n");
+
+
+
+                for (ImageItem i : images) {
+                    String pathofBmp = MediaStore.Images.Media.insertImage(getContentResolver(), i.getImage(), i.getTitle(), null);
+                    Uri bmpUri = Uri.parse(pathofBmp);
+
+                    imageUris.add(bmpUri);
+
+
+
+                }
+
+                sharingIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+
+            }
+
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, text);
+
+
+
+
+
+
+            startActivity(Intent.createChooser(sharingIntent, "Share place using"));
         }
 
         return super.onOptionsItemSelected(item);
@@ -154,13 +300,15 @@ public class PlaceViewActivity extends ActionBarActivity implements AddCompanion
             fragments.add(new PlacesCompanionsFragment());
             fragments.add(new PlacesNotesFragment());
 
+            fragments.add(new PlacesGalleryFragment());
+
             for(PlacesFrag pf : fragments)
                 pf.setPlaceItem(placeItem);
 
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public PlacesFrag getItem(int position) {
             return fragments.get(position);
         }
 
@@ -194,4 +342,193 @@ public class PlaceViewActivity extends ActionBarActivity implements AddCompanion
 
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case (EDIT_PLACE_CODE): {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    final Activity activity = this;
+                    messageHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.w("Handler...", "Recreate requested.");
+                            activity.recreate();
+
+                            pagesViewAdaptor.getItem(0).refresh();
+                        }
+                    }, 1);
+
+                }
+                break;
+            }case (REQUEST_IMAGE_CAPTURE): {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    handleCameraPhoto();
+                }
+
+                break;
+            }
+            case (SELECT_PICTURE): {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    Uri selectedImageUri = data.getData();
+                    mCurrentPhotoPath = getRealPathFromURI(selectedImageUri);
+
+                    camera = false;
+
+                    handleCameraPhoto();
+                }
+
+                break;
+            }
+            case (TAG_PICTURE): {
+                if (resultCode == Activity.RESULT_OK) {
+
+
+                    setPic();
+
+                    if(camera)
+                        galleryAddPic();
+
+                    tag = data.getStringExtra("Tag");
+
+                    long lat = data.getLongExtra("LAT", 0);
+                    long lng = data.getLongExtra("LNG", 0);
+                    //placeID = data.getIntExtra("PlaceID", 0);
+
+                    placeItem.putImage(mCurrentPhotoPath, tag, lat, lng, getApplicationContext());
+
+                    pagesViewAdaptor.refresh(3);
+
+                    pager.setCurrentItem(3, false);
+
+                }
+
+                break;
+            }
+        }
+
+    }
+
+
+    protected void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        sendBroadcast(mediaScanIntent);
+    }
+
+    protected void setPic() {
+        // Get the dimensions of the View
+
+        //Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+        //image.setImageBitmap(bitmap);
+    }
+
+    protected void handleCameraPhoto() {
+
+        if (mCurrentPhotoPath != null) {
+
+            Intent intent = new Intent(getApplicationContext(), ImageTagActivity.class);
+            intent.putExtra("Picture", mCurrentPhotoPath);
+            intent.putExtra("PlaceID", placeID);
+            startActivityForResult(intent, TAG_PICTURE);
+
+            camera = true;
+
+
+        }
+
+    }
+
+    protected void getImageFromStorage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), SELECT_PICTURE);
+    }
+
+
+
+    protected void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+
+    protected File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+
+
+
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    protected String getRealPathFromURI(Uri contentUri) {
+        String wholeID = DocumentsContract.getDocumentId(contentUri);
+
+// Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = {MediaStore.Images.Media.DATA};
+
+// where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = getContentResolver().
+                query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        column, sel, new String[]{id}, null);
+
+        String filePath = "";
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+
+
+        return filePath;
+    }
+
+
+
+
+
 }

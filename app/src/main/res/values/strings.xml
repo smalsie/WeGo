@@ -61,6 +61,13 @@
 
     <string name="quit_add_place_alert_title">Discard New Place?</string>
     <string name="quit_add_place_alert_message">Are you sure you want to discard this place?</string>
+    <string name="quit_edit_place_alert_title">Discard Changes Made?</string>
+    <string name="quit_edit_place_alert_message">Are you sure you want to discard your changes?</string>
+
+    <string name="quit_add_trip_alert_title">Discard New Trip?</string>
+    <string name="quit_add_trip_alert_message">Are you sure you want to discard this trip?</string>
+    <string name="quit_edit_trip_alert_title">Discard Changes Made?</string>
+    <string name="quit_edit_trip_alert_message">Are you sure you want to discard your changes?</string>
 
 
     <string name="add_this_location">Do you want to use your current location?</string>
@@ -85,6 +92,21 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="edit">Edit</string>
+    <string name="view_map">Map</string>
+
+    <string name="name_error">Please insert in a name!</string>
+
+    <string name="picture_type">Image Type?</string>
+    <string name="picture_type_title">Take a picture or select one?</string>
+    <string name="picture_type_camera">Take Photo</string>
+    <string name="picture_type_storage">Select Photo</string>
+
+    <string name="place_date">You were here on: </string>
+    <string name="title_activity_image_tag">ImageTagActivity</string>
+    <string name="title_activity_main_activity2">MainActivity2Activity</string>
+
 
 
 </resources>

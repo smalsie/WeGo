@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 import uk.ac.aston.smalljh.wego.AddPlaceActivity;
 import uk.ac.aston.smalljh.wego.HomeItem;
 import uk.ac.aston.smalljh.wego.R;
+import uk.ac.aston.smalljh.wego.TripItem;
+import uk.ac.aston.smalljh.wego.utils.DatabaseHelper;
 
 public class HomeFragment extends Fragment {
 	
@@ -28,11 +32,9 @@ public class HomeFragment extends Fragment {
              Bundle savedInstanceState) {
          final View rootView = inflater.inflate(R.layout.home_main, container, false);
 
+         DatabaseHelper dh = new DatabaseHelper(getActivity().getApplicationContext());
 
-         ArrayList<HomeItem> homeItems = new ArrayList<HomeItem>();
-
-         homeItems.add(new HomeItem("Joshua Small added the trip New York with Courtney Sullivan!", "5 mins ago"));
-         homeItems.add(new HomeItem("Joshua Small added the trip New York with Courtney Sullivan!", "5 mins ago"));
+         ArrayList<TripItem> homeItems = dh.getTripsAsc(dh.getReadableDatabase());
 
 
          Button b = (Button) rootView.findViewById(R.id.home_add_place);
@@ -45,7 +47,10 @@ public class HomeFragment extends Fragment {
              }
          });
 
+
+
          final ListView listView = (ListView) rootView.findViewById(R.id.listview);
+
 
          final ContactArrayAdaptor arrayAdapter = new ContactArrayAdaptor(getActivity(), homeItems);
 
@@ -59,11 +64,11 @@ public class HomeFragment extends Fragment {
 
 
 
-    private class ContactArrayAdaptor extends ArrayAdapter<HomeItem> {
+    private class ContactArrayAdaptor extends ArrayAdapter<TripItem> {
         private final Context context;
-        private final ArrayList<HomeItem> homeItems;
+        private final ArrayList<TripItem> homeItems;
 
-        public ContactArrayAdaptor(Context context,ArrayList<HomeItem> homeItems) {
+        public ContactArrayAdaptor(Context context,ArrayList<TripItem> homeItems) {
 
             super(context, R.layout.home_fragment,homeItems);
             this.context = context;
@@ -87,12 +92,22 @@ public class HomeFragment extends Fragment {
             TextView time= (TextView) rowView.findViewById(R.id.place_date);
             ImageView image = (ImageView) rowView.findViewById(R.id.nearby_place_icon);
 
-            title.setText(homeItems.get(position).getTitle());
+            String titleText = "Joshua Small added the trip " + homeItems.get(position).getTitle();
+
+            if(homeItems.get(position).getCompanions().size() > 0)
+                titleText += "With,";
+
+            for(String s : homeItems.get(position).getCompanions())
+                titleText += " " + s + ",";
+
+            //titleText = titleText.substring(0, titleText.length()-1);
+
+            title.setText(titleText);
 
             int pic = R.drawable.me;
 
 
-            time.setText(homeItems.get(position).getTime());
+            time.setVisibility(View.GONE);
             image.setImageResource(pic);
 
 

@@ -54,10 +54,14 @@ public class DatePickerClass extends DialogFragment
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-            AddTripActivity activity = (AddTripActivity) getActivity();
+            DatePickerReturn activity = (DatePickerReturn) getActivity();
             activity.onFinishEditDialog(year, monthOfYear, dayOfMonth);
             this.dismiss();
 
 
+    }
+
+    public interface DatePickerReturn {
+        public void onFinishEditDialog(int year, int month, int day);
     }
 }

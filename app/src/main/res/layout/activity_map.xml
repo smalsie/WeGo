@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/map"
+    android:id="@+id/map_activity_map"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="com.google.android.gms.maps.MapFragment"/>
+    android:name="com.google.android.gms.maps.MapFragment">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom|left"
+        android:paddingRight="25dp">
+
+        <Button
+            android:id="@+id/filter_reset"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/end_date"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:visibility="gone"
+            android:text="Reset"/>
+
+        <Button
+            android:id="@+id/filter_start_date"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/start_date"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
+
+        <Button
+            android:id="@+id/filter_end_date"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/end_date"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
+
+    </LinearLayout>
+    </fragment>

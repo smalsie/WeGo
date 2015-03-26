@@ -1,125 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="25dp">
-
-
-        <EditText
-            android:id="@+id/add_trip_name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/name"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black" />
-
-        <EditText
-            android:id="@+id/add_trip_location"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/location"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/add_trip_start_date"
+            <ImageView
+                android:id="@+id/add_trip_image"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/start_date"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:layout_weight="1"/>
-
-            <Button
-                android:id="@+id/add_trip_end_date"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/end_date"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:layout_weight="1" />
+                android:layout_height="222dp"
+                android:layout_margin="0dp"
+                android:adjustViewBounds="true"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/noimage" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="25dp">
 
-            <TextView
+            <EditText
+                android:id="@+id/add_trip_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/companions"/>
+                android:hint="@string/name"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/add_trip_location"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="60"
+                    android:hint="@string/location"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/add_trip_locate_button"
+                    android:layout_width="34dp"
+                    android:layout_height="35dp"
+                    android:padding="0dp"
+                    android:src="@drawable/locate" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/add_trip_start_date"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/start_date"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black" />
+
+                <Button
+                    android:id="@+id/add_trip_end_date"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/end_date"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/companions" />
 
                 <ListView
+                    android:id="@+id/add_trip_companions_listview"
                     android:layout_width="fill_parent"
                     android:layout_height="124dp"
-                    android:id="@+id/add_trip_companions_listview"
                     android:clickable="true"></ListView>
 
-            <Button
-                android:layout_width="fill_parent"
+                <Button
+                    android:id="@+id/add_trip_add_companion"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_companion" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/add_companion"
-                android:id="@+id/add_trip_add_companion"/>
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/notes"/>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notes" />
 
                 <ListView
+                    android:id="@+id/add_trip_notes_listview"
                     android:layout_width="fill_parent"
-                    android:layout_height="124dp"
-                    android:id="@+id/add_trip_notes_listview"></ListView>
+                    android:layout_height="124dp"></ListView>
+
+                <Button
+                    android:id="@+id/add_trip_add_notes"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_note" />
+
+            </LinearLayout>
+
 
             <Button
+                android:id="@+id/add_trip_submit"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/add_note"
-                android:id="@+id/add_trip_add_notes"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@color/purple"
+                android:text="@string/submit"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/add_trip_cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@color/purple"
+                android:text="@string/cancel"
+                android:textColor="@color/white" />
+
 
         </LinearLayout>
-
-
-        <Button
-            android:id="@+id/add_trip_submit"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:background="@color/purple"
-            android:text="@string/submit"
-            android:textColor="@color/white" />
-
-        <Button
-            android:id="@+id/add_trip_cancel"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:background="@color/purple"
-            android:text="@string/cancel"
-            android:textColor="@color/white" />
-
 
     </LinearLayout>
 
