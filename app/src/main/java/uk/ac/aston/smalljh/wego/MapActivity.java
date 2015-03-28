@@ -53,6 +53,8 @@ public class MapActivity extends ActionBarActivity implements
 
     private DatabaseHelper dh;
 
+    private List<Marker> markerList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,22 +160,34 @@ public class MapActivity extends ActionBarActivity implements
         map.getUiSettings().setZoomGesturesEnabled(true);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 2));
 
-        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(getApplicationContext(), PlaceViewActivity.class);
-
-                intent.putExtra("Place", placeItem.getID());
-
-                startActivity(intent);
-            }
-        });
-
-        map.addMarker(new MarkerOptions()
+        markerList.add(map.addMarker(new MarkerOptions()
                 .title(placeItem.getTitle() + " (" + gPlace.getName() + ")")
                 .snippet(gPlace.getVicinity())
                 .position(latlng)
-                .visible(true));
+                .visible(true)));
+
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                int position = 0;
+                for (int i = 0; i < markerList.size(); i++) {
+                    if (markerList.get(i).equals(marker)) {
+                        position = i;
+
+                        Intent intent = new Intent(getApplicationContext(), PlaceViewActivity.class);
+
+                        intent.putExtra("Place", placeItems.get(position).getID());
+
+                        startActivity(intent);
+
+                        break;
+                    }
+                }
+
+            }
+        });
+
+
 
 
 
@@ -251,6 +265,8 @@ public class MapActivity extends ActionBarActivity implements
             startDate = niceDate(year, month, day);
 
             startDateBTN.setText(startDate);
+
+
 
         } else if (returnCode == END_DATE_REQUEST_CODE) {
 

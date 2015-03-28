@@ -156,7 +156,7 @@ public class TripsPlacesFragment extends TripsFrag {
                 }
             });
 
-            if(!placeItem.getPic().equals("")) {
+            if((placeItem.getPic() != null) && (!placeItem.getPic().equals(""))) {
 
                 image.setImageBitmap(placeItem.getPic().getImage());
 

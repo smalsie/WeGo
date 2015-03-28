@@ -127,6 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         c = context;
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // create user table
@@ -246,6 +247,156 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insertInitialFeeds(db, "test", "1234");
         insertInitialFeeds(db, "smalsiee", "12334");
 
+
+        initial(db);
+
+
+
+    }
+
+    public void initial(SQLiteDatabase db) {
+        ContentValues c = new ContentValues();
+
+        //48.1159156,-1.6884545
+        c.put(LocationLatitude, 48.1159156);
+        c.put(LocationLongitude, -1.6884545);
+        c.put(LocationName, "Rennes");
+        c.put(LocationVicinity, "Rennes");
+
+        long locID = db.insert(locationTable, null, c);
+
+        //trip
+        c = new ContentValues();
+
+        c.put(tripsUserId, 1);
+        c.put(tripsTitle, "Trip to France");
+        c.put(tripsLocationID, locID);
+        c.put(tripsStartDate, "21/03/2015");
+        c.put(tripsEndDate, "23/03/2015");
+
+        db.insert(tripsTable, null, c);
+
+        //place
+        c = new ContentValues();
+
+        //48.06839,-1.726429
+        c.put(LocationLatitude, 48.06839);
+        c.put(LocationLongitude, -1.726429);
+        c.put(LocationName, "Rennes–Saint-Jacques Airport");
+        c.put(LocationVicinity, "Avenue Joseph le Brix, Saint-Jacques-de-la-Lande");
+
+        locID = db.insert(locationTable, null, c);
+
+        c = new ContentValues();
+
+        c.put(placesUserId, 1);
+        c.put(placesTitle, "Airport");
+        c.put(placesLocationID, locID);
+        c.put(placesDate, "21/03/2015");
+
+        db.insert(placesTable, null, c);
+
+        //place
+        c = new ContentValues();
+
+        //48.120679,-1.703324
+        c.put(LocationLatitude, 48.120679);
+        c.put(LocationLongitude, -1.703324);
+        c.put(LocationName, "Université Rennes 2");
+        c.put(LocationVicinity, "Rue du Recteur Paul Henry");
+
+        locID = db.insert(locationTable, null, c);
+
+        c = new ContentValues();
+
+        c.put(placesUserId, 1);
+        c.put(placesTitle, "University!");
+        c.put(placesLocationID, locID);
+        c.put(placesDate, "21/03/2015");
+
+        db.insert(placesTable, null, c);
+
+        //place
+        c = new ContentValues();
+
+        //48.1224473,-1.7034884
+        c.put(LocationLatitude, 48.1224473);
+        c.put(LocationLongitude, -1.7034884);
+        c.put(LocationName, "School Saint Jean Bosco");
+        c.put(LocationVicinity, "Rue du Recteur Paul Henry");
+
+        locID = db.insert(locationTable, null, c);
+
+        c = new ContentValues();
+
+        c.put(placesUserId, 1);
+        c.put(placesTitle, "Accommodation!");
+        c.put(placesLocationID, locID);
+        c.put(placesDate, "21/03/2015");
+
+        db.insert(placesTable, null, c);
+
+        //place
+        c = new ContentValues();
+
+        //48.1226031,-1.7043199
+        c.put(LocationLatitude, 48.1226031);
+        c.put(LocationLongitude, -1.7043199);
+        c.put(LocationName, "Villejean-Université");
+        c.put(LocationVicinity, "Rue du Recteur Paul Henry");
+
+        locID = db.insert(locationTable, null, c);
+
+        c = new ContentValues();
+
+        c.put(placesUserId, 1);
+        c.put(placesTitle, "Metro!");
+        c.put(placesLocationID, locID);
+        c.put(placesDate, "22/03/2015");
+
+        db.insert(placesTable, null, c);
+
+        //place
+        c = new ContentValues();
+
+        //48.1144701,-1.6976573
+        c.put(LocationLatitude, 48.1144701);
+        c.put(LocationLongitude, -1.6976573);
+        c.put(LocationName, "République");
+        c.put(LocationVicinity, "Rue du Recteur Paul Henry");
+
+        locID = db.insert(locationTable, null, c);
+
+        c = new ContentValues();
+
+        c.put(placesUserId, 1);
+        c.put(placesTitle, "Metro in Town!");
+        c.put(placesLocationID, locID);
+        c.put(placesDate, "22/03/2015");
+
+        db.insert(placesTable, null, c);
+
+        //place
+        c = new ContentValues();
+
+        //48.1144701,-1.6976573
+        c.put(LocationLatitude, 48.1144701);
+        c.put(LocationLongitude, -1.6976573);
+        c.put(LocationName, "Cathédrale");
+        c.put(LocationVicinity, "Saint-Pierre de Rennes");
+
+        locID = db.insert(locationTable, null, c);
+
+        c = new ContentValues();
+
+        c.put(placesUserId, 1);
+        c.put(placesTitle, "Cathedral!");
+        c.put(placesLocationID, locID);
+        c.put(placesDate, "23/03/2015");
+
+        db.insert(placesTable, null, c);
+
+
     }
 
     private void insertInitialFeeds(SQLiteDatabase db, String username, String password) {
@@ -318,7 +469,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long ret = db.insert(table, null, inserts);
 
-        //db.close();
+        db.close();
 
         return ret;
     }
@@ -740,6 +891,63 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return places;
 
     }
+
+    public ArrayList<PlaceItem> getPlaces(SQLiteDatabase db, long tripID, String startDate, String endDate) {
+        ArrayList<PlaceItem> places = new ArrayList<PlaceItem>();
+
+        int savedUserID = new UserInfo(c).getUserID();
+
+
+        String[] projection = {
+                tripsPlaceID,
+        };
+
+        String whereClause = tripsPlaceTripId + "=?";
+
+
+
+        String[] whereArgs = new String[]{
+                tripID + "",
+        };
+
+        String sortOrder =
+                tripsPlaceID;
+
+
+        Cursor c = db.query(
+                tripsPlacesTable,  // The table to query
+                projection,                               // The columns to return
+                whereClause,                                // The columns for the WHERE clause
+                whereArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        if (c.getCount() != 0) {
+
+            if (c.moveToFirst()) {
+                do {
+
+                    long placeID = c.getLong(
+                            c.getColumnIndexOrThrow(tripsPlaceID)
+                    );
+
+                    places.add(getPlace(placeID, db));
+
+
+                } while (c.moveToNext());
+            }
+
+
+        }
+
+
+
+        return places;
+
+    }
+
 
     public ArrayList<PlaceItem> getPlaces(SQLiteDatabase db) {
         ArrayList<PlaceItem> places = new ArrayList<PlaceItem>();

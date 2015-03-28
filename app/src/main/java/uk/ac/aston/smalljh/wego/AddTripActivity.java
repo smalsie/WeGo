@@ -94,14 +94,24 @@ public class AddTripActivity extends AddObject implements DatePickerClass.DatePi
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (submit()) {
 
-                    Toast.makeText(getApplicationContext(), getText(R.string.trip_added), Toast.LENGTH_LONG).show();
+                long tripID = submit();
 
-                    if (editing) {
-                        Intent resultIntent = new Intent();
-                        setResult(Activity.RESULT_OK, resultIntent);
+                if (tripID> 0) {
+
+                    if(editing)
+                        Toast.makeText(getApplicationContext(), "Trip Updated", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(getApplicationContext(), getText(R.string.trip_added), Toast.LENGTH_LONG).show();
+
+                    Intent resultIntent = new Intent();
+
+
+                    if (!editing) {
+                        resultIntent.putExtra("TRIPID", tripID);
                     }
+
+                    setResult(Activity.RESULT_OK, resultIntent);
 
                     finish();
 
@@ -172,7 +182,7 @@ public class AddTripActivity extends AddObject implements DatePickerClass.DatePi
 
     }
 
-    protected boolean submit() {
+    protected long submit() {
 
         String name = nameEditText.getText().toString();
         if (name.equals("")) {
@@ -188,7 +198,7 @@ public class AddTripActivity extends AddObject implements DatePickerClass.DatePi
             AlertDialog alert = builder.create();
             alert.show();
 
-            return false;
+            return 0;
         } else if(!startDateSet) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -202,7 +212,7 @@ public class AddTripActivity extends AddObject implements DatePickerClass.DatePi
             AlertDialog alert = builder.create();
             alert.show();
 
-            return false;
+            return 0;
 
         }  else if(!endDateSet) {
 
@@ -217,7 +227,7 @@ public class AddTripActivity extends AddObject implements DatePickerClass.DatePi
             AlertDialog alert = builder.create();
             alert.show();
 
-            return false;
+            return 0;
 
         } else if(locationEditText.getText().toString().equals("")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -231,7 +241,7 @@ public class AddTripActivity extends AddObject implements DatePickerClass.DatePi
             AlertDialog alert = builder.create();
             alert.show();
 
-            return false;
+            return 0;
         } else {
 
             ContentValues c = new ContentValues();
@@ -333,6 +343,9 @@ public class AddTripActivity extends AddObject implements DatePickerClass.DatePi
 
                 int affected = dh.update(dh.tripsTable, c, whereClause, whereArgs);
 
+                if(affected > 0)
+                    id = 1000000;
+
                 Log.i("Edit Place Place", affected + "");
 
             } else {
@@ -341,10 +354,11 @@ public class AddTripActivity extends AddObject implements DatePickerClass.DatePi
 
             }
 
+            return id;
+
 
         }
 
-        return true;
     }
 
     private void edit(long tripID) {
@@ -372,7 +386,7 @@ public class AddTripActivity extends AddObject implements DatePickerClass.DatePi
 
         startDateBtn.setText(startDate);
         endDateBtn.setText(endDate);
-        locationEditText.setText(place.getName());
+        locationEditText.setText(place.getName() + ", " + place.getVicinity());
 
 
         if ((tripItem.getPic() != null) && tripItem.getPic().getID() > 0) {

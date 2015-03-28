@@ -1,9 +1,11 @@
 package uk.ac.aston.smalljh.wego;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -29,6 +31,7 @@ import uk.ac.aston.smalljh.wego.fragments.PlacesFragment;
 import uk.ac.aston.smalljh.wego.fragments.TripFragment;
 import uk.ac.aston.smalljh.wego.fragments.UserInfo;
 import uk.ac.aston.smalljh.wego.utils.DatabaseHelper;
+import uk.ac.aston.smalljh.wego.utils.GPlaces;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -42,6 +45,9 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence title;
 
     private UserInfo userInfo;
+
+    private final int ADD_PLACE_RESULT = 1;
+    private final int ADD_TRIP_RESULT = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,14 +206,14 @@ public class MainActivity extends ActionBarActivity {
 
         }  else if(position == 5) {
             Intent intent = new Intent(getApplicationContext(), AddTripActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, ADD_TRIP_RESULT);
 
         } else if(position == 6) {
 
             drawerLayout.closeDrawer(drawerList);
 
             Intent intent = new Intent(getApplicationContext(), AddPlaceActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, ADD_PLACE_RESULT);
 
         } else if(position == 7) {
 
@@ -253,7 +259,7 @@ public class MainActivity extends ActionBarActivity {
                     .addToBackStack(null)
                     .commit();
 
-            if(position< 6)
+            if((position< 6) || (position != 3) || (position != 5))
                 drawerList.setItemChecked(position, true);
 
             setTitle(menuItems[position]);
@@ -267,6 +273,46 @@ public class MainActivity extends ActionBarActivity {
     public void setTitle(CharSequence title) {
         this.title = title;
         getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case (ADD_PLACE_RESULT): {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    long placeID = data.getLongExtra("PLACEID", 0);
+
+                    if(placeID > 0) {
+                        Intent intent = new Intent(getApplicationContext(), PlaceViewActivity.class);
+
+                        intent.putExtra("Place", placeID);
+
+                        startActivity(intent);
+                    }
+                }
+                break;
+            }
+            case (ADD_TRIP_RESULT): {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    long tripID = data.getLongExtra("TRIPID", 0);
+
+                    if(tripID > 0) {
+                        Intent intent = new Intent(getApplicationContext(), TripViewActivity.class);
+
+                        intent.putExtra("TRIP", tripID);
+
+                        startActivity(intent);
+                    }
+                }
+
+                break;
+            }
+
+        }
+
     }
 
 

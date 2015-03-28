@@ -88,15 +88,22 @@ public class AddPlaceActivity extends AddObject implements DatePickerClass.DateP
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (submit()) {
 
-                    Toast.makeText(getApplicationContext(), getText(R.string.place_added), Toast.LENGTH_LONG).show();
+                long placeID = submit();
+                if (placeID > 0) {
 
-                    if (editing) {
-                        Intent resultIntent = new Intent();
-                        setResult(Activity.RESULT_OK, resultIntent);
+                    if(editing)
+                        Toast.makeText(getApplicationContext(), "Place Updated", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(getApplicationContext(), getText(R.string.place_added), Toast.LENGTH_LONG).show();
+
+                    Intent resultIntent = new Intent();
+                    if (!editing) {
+                        resultIntent.putExtra("PLACEID", placeID);
                     }
 
+
+                    setResult(Activity.RESULT_OK, resultIntent);
                     finish();
 
                 }
@@ -139,7 +146,7 @@ public class AddPlaceActivity extends AddObject implements DatePickerClass.DateP
 
 
     @Override
-    protected boolean submit() {
+    protected long submit() {
         String name = nameEditText.getText().toString();
 
         if (name.equals("")) {
@@ -155,7 +162,7 @@ public class AddPlaceActivity extends AddObject implements DatePickerClass.DateP
             AlertDialog alert = builder.create();
             alert.show();
 
-            return false;
+            return 0;
         } else if(!dateSet) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -169,7 +176,7 @@ public class AddPlaceActivity extends AddObject implements DatePickerClass.DateP
             AlertDialog alert = builder.create();
             alert.show();
 
-            return false;
+            return 0;
 
         } else if(locationEditText.getText().toString().equals("")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -183,7 +190,7 @@ public class AddPlaceActivity extends AddObject implements DatePickerClass.DateP
             AlertDialog alert = builder.create();
             alert.show();
 
-            return false;
+            return 0;
         } else
          {
 
@@ -283,6 +290,9 @@ public class AddPlaceActivity extends AddObject implements DatePickerClass.DateP
 
                 int affected = dh.update(dh.placesTable, c, whereClause, whereArgs);
 
+                if(affected > 0)
+                    id = 1000000;
+
                 Log.i("Edit Place Place", affected + "");
 
             } else {
@@ -292,11 +302,11 @@ public class AddPlaceActivity extends AddObject implements DatePickerClass.DateP
             }
 
 
+             return id;
 
 
         }
 
-        return true;
 
 
     }
@@ -322,7 +332,7 @@ public class AddPlaceActivity extends AddObject implements DatePickerClass.DateP
 
         nameEditText.setText(placeItem.getTitle());
         dateButton.setText(placeItem.getDate());
-        locationEditText.setText(place.getName());
+        locationEditText.setText(place.getName() + ", " + place.getVicinity());
 
 
         if ((placeItem.getPic()!= null) && (placeItem.getPic().getID() > 0)) {

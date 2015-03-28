@@ -20,6 +20,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import uk.ac.aston.smalljh.wego.AddPlaceActivity;
+import uk.ac.aston.smalljh.wego.AddTripActivity;
 import uk.ac.aston.smalljh.wego.HomeItem;
 import uk.ac.aston.smalljh.wego.R;
 import uk.ac.aston.smalljh.wego.TripItem;
@@ -43,6 +44,16 @@ public class HomeFragment extends Fragment {
              @Override
              public void onClick(View v) {
                  Intent intent = new Intent(rootView.getContext(), AddPlaceActivity.class);
+                 startActivity(intent);
+             }
+         });
+
+         Button bb = (Button) rootView.findViewById(R.id.home_add_trip);
+
+         bb.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent = new Intent(rootView.getContext(), AddTripActivity.class);
                  startActivity(intent);
              }
          });

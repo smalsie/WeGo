@@ -91,7 +91,7 @@ public abstract class AddObject extends ActionBarActivity {
                 "Select Picture"), SELECT_PICTURE);
     }
 
-    protected abstract boolean submit();
+    protected abstract long submit();
 
 
 
